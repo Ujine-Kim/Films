@@ -994,7 +994,6 @@
         const genre = currentLang === 'ru' ? f.genreRu : f.genreEn;
         const tagline = currentLang === 'ru' ? f.taglineRu : f.taglineEn;
         const award = currentLang === 'ru' ? f.awardRu : f.awardEn;
-        const rentLabel = currentLang === 'ru' ? `Аренда $${f.rentPrice}` : `Rent $${f.rentPrice}`;
         const buyLabel = currentLang === 'ru' ? `Купить $${f.buyPrice}` : `Buy $${f.buyPrice}`;
         const watchLabel = currentLang === 'ru' ? 'Смотреть' : 'Watch film';
 
@@ -1004,7 +1003,6 @@
             <div class="film-card-grain"></div>
             <div class="film-card-overlay"></div>
             <div class="film-card-price">
-              <span class="price-tag">${rentLabel}</span>
               <span class="price-tag">${buyLabel}</span>
             </div>
             ${award ? `<div class="film-card-award">${award}</div>` : ''}
