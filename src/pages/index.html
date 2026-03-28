@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>noúmenon — Filmmaker</title>
+  <meta name="description" content="Films by noúmenon. Short films by Armenak." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            body: ['Montserrat', 'sans-serif'],
+          },
+          colors: {
+            ink: '#080808',
+            paper: '#f5f0e8',
+            dust: '#9a9080',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #e8c97a;
+      --ink: #080808;
+      --paper: #f5f0e8;
+      --dust: #9a9080;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--paper);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s, width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(245,240,232,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.3s, height 0.3s, border-color 0.2s;
+    }
+    .cursor-ring.hovering {
+      width: 60px; height: 60px;
+      border-color: rgba(232,201,122,0.7);
+    }
+
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 28px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.9) 0%, transparent 100%);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--paper);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1px;
+      line-height: 1;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dust);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-link:hover { color: var(--paper); }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--dust);
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      transition: color 0.3s;
+      padding: 0;
+    }
+    .lang-btn.active { color: var(--paper); }
+    .lang-sep { color: var(--dust); opacity: 0.4; }
+
+    /* Hero */
+    /* ── Hero Carousel ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1) translateZ(0);
+      z-index: 0;
+      will-change: opacity, transform;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+
+    .hero-slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(8,8,8,0.92) 0%,
+        rgba(8,8,8,0.45) 50%,
+        rgba(8,8,8,0.2) 100%
+      );
+    }
+
+    /* Grain overlay */
+    .grain {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 6;
+      padding: 0 40px 80px;
+    }
+
+    .hero-film-label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s ease forwards;
+    }
+
+    .hero-film-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 7vw, 100px);
+      font-weight: 300;
+      line-height: 0.92;
+      color: var(--paper);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 1s 0.5s ease forwards;
+    }
+
+    .hero-film-title em {
+      font-style: italic;
+    }
+
+    .hero-film-desc {
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--dust);
+      max-width: 480px;
+      line-height: 1.9;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 1s 0.7s ease forwards;
+    }
+
+    .hero-btns {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .hero-film-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--paper);
+      text-decoration: none;
+      opacity: 0;
+      animation: fadeUp 1s 0.9s ease forwards;
+      transition: color 0.3s;
+    }
+
+    .hero-film-link:hover { color: var(--accent); }
+
+    .hero-film-link-line {
+      width: 40px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.3s;
+    }
+
+    .hero-film-link:hover .hero-film-link-line { width: 60px; }
+
+    .hero-trailer-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.45);
+      text-decoration: none;
+      transition: color 0.3s;
+      opacity: 0;
+      animation: fadeUp 1s 1.0s ease forwards;
+    }
+
+    .hero-trailer-btn:hover { color: var(--paper); }
+
+    .hero-trailer-icon {
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(245,240,232,0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.3s;
+    }
+
+    .hero-trailer-btn:hover .hero-trailer-icon { border-color: rgba(245,240,232,0.7); }
+
+    .hero-trailer-icon svg {
+      width: 8px; height: 9px;
+      fill: currentColor;
+      margin-left: 1px;
+    }
+
+    /* Click zones (left / right halves) */
+    .hero-zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      z-index: 4;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: none;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hero-zone:focus { outline: none; }
+
+    .hero-zone-left  { left: 0; }
+    .hero-zone-right { right: 0; }
+
+    /* Carousel controls */
+    .hero-controls {
+      position: absolute;
+      bottom: 36px;
+      right: 40px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+      animation: fadeIn 1s 1.2s ease forwards;
+      pointer-events: none;
+    }
+
+    .hero-dots {
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .hero-dot {
+      width: 24px;
+      height: 1px;
+      background: rgba(245,240,232,0.3);
+      cursor: pointer;
+      transition: background 0.3s, width 0.3s;
+      border: none;
+      padding: 0;
+    }
+
+    .hero-dot.active {
+      width: 40px;
+      background: var(--paper);
+    }
+
+    /* Counter */
+    .hero-counter {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: rgba(245,240,232,0.35);
+      pointer-events: none;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Films section */
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 60px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.4;
+    }
+
+    /* Film grid */
+    .films-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 2px;
+    }
+
+    .film-card {
+      position: relative;
+      aspect-ratio: 2/3;
+      overflow: hidden;
+      cursor: none;
+      text-decoration: none;
+      display: block;
+    }
+
+    .film-card-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .film-card:hover .film-card-bg {
+      transform: scale(1.05);
+    }
+
+    .film-card-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .film-card-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(to top,
+        rgba(8,8,8,0.96) 0%,
+        rgba(8,8,8,0.4) 40%,
+        rgba(8,8,8,0.0) 70%
+      );
+      transition: background 0.5s;
+    }
+
+    .film-card:hover .film-card-overlay {
+      background: linear-gradient(to top,
+        rgba(8,8,8,0.98) 0%,
+        rgba(8,8,8,0.6) 50%,
+        rgba(8,8,8,0.15) 100%
+      );
+    }
+
+    .film-card-content {
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      z-index: 3;
+      padding: 36px 32px;
+    }
+
+    .film-card-meta {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dust);
+      margin-bottom: 10px;
+    }
+
+    .film-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 46px;
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--paper);
+      margin-bottom: 12px;
+    }
+
+    .film-card-tagline {
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--dust);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.5s ease, opacity 0.4s ease, margin 0.4s;
+    }
+
+    .film-card:hover .film-card-tagline {
+      max-height: 80px;
+      opacity: 1;
+    }
+
+    .film-card-action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--paper);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s 0.1s ease, transform 0.4s 0.1s ease;
+    }
+
+    .film-card:hover .film-card-action {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .action-arrow {
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+      position: relative;
+    }
+    .action-arrow::after {
+      content: '';
+      position: absolute;
+      right: 0; top: -3px;
+      width: 6px; height: 6px;
+      border-top: 1px solid var(--accent);
+      border-right: 1px solid var(--accent);
+      transform: rotate(45deg);
+    }
+
+    .film-card-award {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      z-index: 4;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: right;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .film-card:hover .film-card-award {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Pricing badge */
+    .film-card-price {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      z-index: 4;
+      display: flex;
+      gap: 8px;
+    }
+
+    .price-tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: rgba(245,240,232,0.5);
+      background: rgba(8,8,8,0.6);
+      border: 1px solid rgba(245,240,232,0.1);
+      padding: 4px 8px;
+      backdrop-filter: blur(4px);
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .film-card:hover .price-tag {
+      color: var(--paper);
+      border-color: rgba(232,201,122,0.3);
+    }
+
+    /* Bio / About section */
+    .about-section {
+      padding: 160px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .about-section { grid-template-columns: 1fr; gap: 48px; padding: 100px 24px; }
+      .films-grid { grid-template-columns: 1fr; }
+      nav { padding: 20px 24px; }
+      .hero-content { padding: 0 24px 60px; }
+    }
+
+    .about-photo-frame {
+      position: relative;
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, #111118 0%, #1e1a24 100%);
+      overflow: hidden;
+    }
+
+    .about-photo-frame::before {
+      content: 'A';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 180px;
+      font-weight: 300;
+      color: rgba(245,240,232,0.04);
+      letter-spacing: -0.05em;
+    }
+
+    .about-photo-border {
+      position: absolute;
+      inset: 16px;
+      border: 1px solid rgba(245,240,232,0.06);
+    }
+
+    .about-eyebrow {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .about-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 5vw, 64px);
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--paper);
+      margin-bottom: 32px;
+    }
+
+    .about-bio {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--dust);
+      margin-bottom: 36px;
+    }
+
+    .about-based {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(245,240,232,0.06);
+      padding: 48px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+    }
+
+    .footer-copy {
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      color: rgba(245,240,232,0.2);
+    }
+
+    /* Divider line */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(245,240,232,0.08), transparent);
+    }
+
+    /* Section padding */
+    .section {
+      padding: 120px 40px;
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 80px 24px; }
+      footer { flex-direction: column; gap: 20px; padding: 40px 24px; }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <span>noúmenon</span>
+      <span style="font-size:13px; font-family:'Montserrat',sans-serif; font-weight:400; letter-spacing:0.22em; text-transform:uppercase; color:var(--dust); margin-left:2px;">by Armenak</span>
+    </a>
+    <div class="nav-right">
+      <a href="#films" class="nav-link" data-en="FILMS" data-ru="ФИЛЬМЫ">FILMS</a>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <span class="lang-sep">/</span>
+        <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Carousel -->
+  <section class="hero" id="heroSection">
+    <div class="hero-slides" id="heroSlides"></div>
+    <div class="grain"></div>
+    <button class="hero-zone hero-zone-left"  id="heroPrev" aria-label="Previous"></button>
+    <button class="hero-zone hero-zone-right" id="heroNext" aria-label="Next"></button>
+    <div class="hero-content" id="heroContent"></div>
+    <div class="hero-controls">
+      <span class="hero-counter" id="heroCounter">1 / 2</span>
+      <div class="hero-dots" id="heroDots"></div>
+    </div>
+  </section>
+
+  <!-- Films Section -->
+  <div class="divider"></div>
+  <section class="section" id="films">
+    <p class="section-label reveal" data-en="DIRECTOR · SHORT FILMS" data-ru="РЕЖИССЁР · КОРОТКИЙ МЕТР">DIRECTOR · SHORT FILMS</p>
+    <div class="films-grid" id="filmsGrid"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span class="footer-logo">NOÚMENON</span>
+    <span class="footer-copy">© 2025 ARMENAK. ALL RIGHTS RESERVED.</span>
+  </footer>
+
+  <script>
+    // Film data (mirrors server)
+    const films = [
+      {
+        slug: "the-lyrics",
+        titleEn: "The Lyrics",
+        titleRu: "Стих",
+        year: 2025,
+        duration: 11,
+        genreEn: "Short Film",
+        genreRu: "Короткий метр",
+        taglineEn: "A soundrama about love and creativity.",
+        taglineRu: "Саундрама о любви и творчестве.",
+        poster: "url('/images/posters/the-lyrics.png') center/cover no-repeat",
+        accentColor: "#c4b08a",
+        awardEn: "",
+        awardRu: "",
+        filmUrl: "/film/the-lyrics",
+        trailerUrl: "",
+        rentPrice: 3.99,
+        buyPrice: 9.99
+      },
+      {
+        slug: "the-drift",
+        titleEn: "The Drift",
+        titleRu: "Дрейф",
+        year: 2026,
+        duration: 44,
+        genreEn: "Documentary",
+        genreRu: "Документальный фильм",
+        taglineEn: "A husband and wife travel to Iran to find their missing son.",
+        taglineRu: "История мужа и жены, которые отправляются в Иран найти пропавшего сына.",
+        poster: "url('/images/posters/the-drift.png') center/cover no-repeat",
+        accentColor: "#c47a4a",
+        awardEn: "",
+        awardRu: "",
+        filmUrl: "/film/the-drift",
+        trailerUrl: "",
+        rentPrice: 3.99,
+        buyPrice: 9.99
+      }
+    ];
+
+    // Language state
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      document.documentElement.setAttribute('data-lang', lang);
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+
+      // Update static text nodes
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = lang === 'ru' ? el.dataset.ru : el.dataset.en;
+      });
+
+      // Re-render hero с анимацией текста вниз
+      updateHeroContent(true);
+      updateHeroDots();
+    }
+
+
+    // ── Hero Carousel ──
+    const heroSlidesEl = document.getElementById('heroSlides');
+    const heroContent  = document.getElementById('heroContent');
+    const heroDots     = document.getElementById('heroDots');
+    const heroCounter  = document.getElementById('heroCounter');
+    let heroIndex = 0;
+    let heroContentTimer = null;
+
+    // Build slides once (CSS handles opacity transition)
+    function initHeroSlides() {
+      heroSlidesEl.innerHTML = films.map((film, i) => `
+        <div class="hero-slide${i === 0 ? ' active' : ''}"
+             style="background: ${film.poster};">
+          <div class="hero-slide-overlay"></div>
+        </div>`).join('');
+
+      // Build dots once
+      heroDots.innerHTML = films.map((_, i) => `
+        <button class="hero-dot${i === 0 ? ' active' : ''}"
+                onclick="goHero(${i}, ${i > heroIndex ? '\'next\'' : '\'prev\''})" aria-label="Slide ${i+1}"></button>`).join('');
+    }
+
+    function updateHeroContent(animate) {
+      const f = films[heroIndex];
+      const isRu = currentLang === 'ru';
+      const title     = isRu ? f.titleRu  : f.titleEn;
+      const tagline   = isRu ? f.taglineRu : f.taglineEn;
+      const genre     = isRu ? f.genreRu  : f.genreEn;
+      const watchLabel   = isRu ? 'Смотреть фильм' : 'Watch film';
+      const trailerLabel = isRu ? 'Трейлер' : 'Trailer';
+
+      const trailerBtn = f.trailerUrl
+        ? `<a href="${f.trailerUrl}" target="_blank" class="hero-trailer-btn">
+             <div class="hero-trailer-icon">
+               <svg viewBox="0 0 8 9"><polygon points="0,0 8,4.5 0,9"/></svg>
+             </div>
+             <span>${trailerLabel}</span>
+           </a>`
+        : '';
+
+      const html = `
+        <p class="hero-film-label">${genre} · ${f.year} · ${f.duration}${isRu ? ' мин' : ' min'}</p>
+        <h1 class="hero-film-title"><em>${title}</em></h1>
+        <p class="hero-film-desc">${tagline}</p>
+        <div class="hero-btns">
+          <a href="${f.filmUrl || '/film/' + f.slug}" class="hero-film-link">
+            <span>${watchLabel}</span>
+            <div class="hero-film-link-line"></div>
+          </a>
+          ${trailerBtn}
+        </div>`;
+
+      clearTimeout(heroContentTimer);
+
+      if (!animate) {
+        heroContent.innerHTML        = html;
+        heroContent.style.transition = '';
+        heroContent.style.opacity    = '1';
+        heroContent.style.transform  = 'translateY(0)';
+        return;
+      }
+
+      // Fade out → update → fade in
+      heroContent.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+      heroContent.style.opacity    = '0';
+      heroContent.style.transform  = 'translateY(10px)';
+      heroContentTimer = setTimeout(() => {
+        heroContent.innerHTML        = html;
+        heroContent.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        heroContent.style.opacity    = '1';
+        heroContent.style.transform  = 'translateY(0)';
+      }, 360);
+    }
+
+    function updateHeroDots() {
+      heroDots.querySelectorAll('.hero-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === heroIndex);
+      });
+      heroCounter.textContent = `${heroIndex + 1} / ${films.length}`;
+    }
+
+    const TRANSITION_DUR = 1000; // ms
+    let isTransitioning = false;
+
+    function goHero(idx, dir) {
+      if (isTransitioning) return;
+      const nextIndex = (idx + films.length) % films.length;
+      if (nextIndex === heroIndex) return;
+      isTransitioning = true;
+
+      const slides = heroSlidesEl.querySelectorAll('.hero-slide');
+      const current = slides[heroIndex];
+      const next    = slides[nextIndex];
+      const ease    = `${TRANSITION_DUR}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+
+      // Новый слайд — начинает чуть увеличенным, opacity 0
+      next.style.transition = 'none';
+      next.style.transform  = 'scale(1.06)';
+      next.style.opacity    = '0';
+      next.classList.add('active');
+
+      // Форсируем reflow чтобы браузер зафиксировал начальное состояние
+      next.getBoundingClientRect();
+
+      // Текущий уходит: увеличивается + исчезает
+      current.style.transition = `opacity ${ease}, transform ${ease}`;
+      current.style.transform  = 'scale(1.08)';
+      current.style.opacity    = '0';
+
+      // Новый появляется: уменьшается до нормального + появляется
+      next.style.transition = `opacity ${ease}, transform ${ease}`;
+      next.style.transform  = 'scale(1)';
+      next.style.opacity    = '1';
+
+      // Обновляем индекс сразу, затем меняем текст
+      heroIndex = nextIndex;
+      updateHeroContent(true);
+      updateHeroDots();
+
+      setTimeout(() => {
+        current.classList.remove('active');
+        current.style.transition = '';
+        current.style.transform  = '';
+        current.style.opacity    = '';
+        isTransitioning = false;
+      }, TRANSITION_DUR);
+    }
+
+    document.getElementById('heroPrev').addEventListener('click', () => goHero(heroIndex - 1, 'prev'));
+    document.getElementById('heroNext').addEventListener('click', () => goHero(heroIndex + 1, 'next'));
+
+    function renderHero() {
+      updateHeroContent(false);
+      updateHeroDots();
+    }
+
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+
+    (function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    document.addEventListener('mouseover', e => {
+      if (e.target.closest('a, button')) ring.classList.add('hovering');
+      else ring.classList.remove('hovering');
+    });
+
+    // Render film cards
+    function renderFilms() {
+      const grid = document.getElementById('filmsGrid');
+      if (!grid) return;
+      grid.innerHTML = films.map(f => {
+        const title = currentLang === 'ru' ? f.titleRu : f.titleEn;
+        const genre = currentLang === 'ru' ? f.genreRu : f.genreEn;
+        const tagline = currentLang === 'ru' ? f.taglineRu : f.taglineEn;
+        const award = currentLang === 'ru' ? f.awardRu : f.awardEn;
+        const rentLabel = currentLang === 'ru' ? `Аренда $${f.rentPrice}` : `Rent $${f.rentPrice}`;
+        const buyLabel = currentLang === 'ru' ? `Купить $${f.buyPrice}` : `Buy $${f.buyPrice}`;
+        const watchLabel = currentLang === 'ru' ? 'Смотреть' : 'Watch film';
+
+        return `
+          <a href="/film/${f.slug}" class="film-card reveal">
+            <div class="film-card-bg" style="background: ${f.poster};"></div>
+            <div class="film-card-grain"></div>
+            <div class="film-card-overlay"></div>
+            <div class="film-card-price">
+              <span class="price-tag">${rentLabel}</span>
+              <span class="price-tag">${buyLabel}</span>
+            </div>
+            ${award ? `<div class="film-card-award">${award}</div>` : ''}
+            <div class="film-card-content">
+              <p class="film-card-meta">${genre} · ${f.year} · ${f.duration}${currentLang === 'ru' ? ' мин' : ' min'}</p>
+              <h3 class="film-card-title">${title}</h3>
+              <p class="film-card-tagline">${tagline}</p>
+              <div class="film-card-action">
+                <span>${watchLabel}</span>
+                <div class="action-arrow"></div>
+              </div>
+            </div>
+          </a>`;
+      }).join('');
+      observeReveal();
+    }
+
+    // Scroll reveal
+    function observeReveal() {
+      const els = document.querySelectorAll('.reveal:not(.visible)');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e, i) => {
+          if (e.isIntersecting) {
+            setTimeout(() => e.target.classList.add('visible'), i * 80);
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      els.forEach(el => obs.observe(el));
+    }
+
+    // Init
+    initHeroSlides();
+    renderHero();
+    renderFilms();
+    observeReveal();
+    setLang(currentLang);
+  </script>
+</body>
+</html>

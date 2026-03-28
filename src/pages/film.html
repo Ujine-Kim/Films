@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Film — noúmenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --accent: #e8c97a; --ink: #080808; --paper: #f5f0e8; --dust: #9a9080; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── Custom cursor ── */
+    .cursor { position:fixed; width:8px; height:8px; background:var(--paper); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:difference; }
+    .cursor-ring { position:fixed; width:36px; height:36px; border:1px solid rgba(245,240,232,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width 0.3s, height 0.3s, border-color 0.2s; }
+    .cursor-ring.hovering { width:60px; height:60px; border-color:rgba(232,201,122,0.7); }
+
+    /* ── Grain ── */
+    .grain { position:fixed; inset:0; z-index:2; opacity:0.04; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); background-size:256px 256px; pointer-events:none; }
+
+    /* ── Nav ── */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:28px 40px; display:flex; justify-content:space-between; align-items:center; background:linear-gradient(to bottom, rgba(8,8,8,0.85) 0%, transparent 100%); }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:300; letter-spacing:0.12em; color:var(--paper); text-decoration:none; display:flex; flex-direction:column; align-items:flex-start; gap:1px; line-height:1; }
+    .nav-logo-sub { font-size:13px; font-family:'Montserrat',sans-serif; font-weight:400; letter-spacing:0.22em; text-transform:uppercase; color:var(--dust); margin-left:2px; }
+    .nav-right { display:flex; align-items:center; gap:32px; }
+    .nav-back { font-size:12px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--dust); text-decoration:none; transition:color 0.3s; display:flex; align-items:center; gap:10px; }
+    .nav-back:hover { color:var(--paper); }
+    .nav-back-arrow { width:20px; height:1px; background:currentColor; position:relative; }
+    .nav-back-arrow::before { content:''; position:absolute; left:0; top:-3px; width:6px; height:6px; border-bottom:1px solid currentColor; border-left:1px solid currentColor; transform:rotate(45deg); }
+    .lang-toggle { display:flex; align-items:center; gap:6px; }
+    .lang-btn { background:none; border:none; color:var(--dust); cursor:none; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.15em; transition:color 0.3s; padding:0; }
+    .lang-btn.active { color:var(--paper); }
+    .lang-sep { color:var(--dust); opacity:0.4; }
+
+    /* ── Hero carousel ── */
+    .hero { position:relative; height:100vh; overflow:hidden; }
+    .hero-slides { position:absolute; inset:0; }
+    .hero-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transform:scale(1) translateZ(0); z-index:0; will-change:opacity,transform; }
+    .hero-slide.active { opacity:1; z-index:1; }
+    .hero-slide-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.45) 50%, rgba(8,8,8,0.2) 100%); }
+    .hero-slide-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; transition:opacity 0.08s linear; }
+
+    /* Click zones */
+    .hero-zone { position:absolute; top:0; bottom:0; width:50%; z-index:4; background:transparent; border:none; outline:none; cursor:none; padding:0; -webkit-tap-highlight-color:transparent; }
+    .hero-zone:focus { outline:none; }
+    .hero-zone-left  { left:0; }
+    .hero-zone-right { right:0; }
+
+    /* Hero text */
+    .hero-content { position:absolute; bottom:0; left:0; right:0; z-index:6; padding:0 40px 80px; }
+    .hero-film-label { font-size:11px; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; opacity:0; animation:fadeUp 1s 0.3s ease forwards; }
+    .hero-film-title { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,7vw,100px); font-weight:300; line-height:0.92; color:var(--paper); margin-bottom:20px; opacity:0; animation:fadeUp 1s 0.5s ease forwards; }
+    .hero-film-title em { font-style:italic; }
+    .hero-film-desc { font-size:14px; font-weight:300; letter-spacing:0.08em; color:var(--dust); max-width:480px; line-height:1.9; margin-bottom:32px; opacity:0; animation:fadeUp 1s 0.7s ease forwards; }
+    .hero-btns { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+
+    .hero-film-link { display:inline-flex; align-items:center; gap:12px; font-size:12px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--paper); text-decoration:none; opacity:0; animation:fadeUp 1s 0.9s ease forwards; transition:color 0.3s; }
+    .hero-film-link:hover { color:var(--accent); }
+    .hero-film-link-line { width:40px; height:1px; background:currentColor; transition:width 0.3s; }
+    .hero-film-link:hover .hero-film-link-line { width:60px; }
+
+    .hero-trailer-btn { display:inline-flex; align-items:center; gap:10px; font-size:12px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:rgba(245,240,232,0.45); text-decoration:none; transition:color 0.3s; opacity:0; animation:fadeUp 1s 1.0s ease forwards; }
+    .hero-trailer-btn:hover { color:var(--paper); }
+    .hero-trailer-icon { width:28px; height:28px; border:1px solid rgba(245,240,232,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:border-color 0.3s; }
+    .hero-trailer-btn:hover .hero-trailer-icon { border-color:rgba(245,240,232,0.7); }
+    .hero-trailer-icon svg { width:8px; height:9px; fill:currentColor; margin-left:1px; }
+
+    /* Controls */
+    .hero-controls { position:absolute; bottom:36px; right:40px; z-index:5; display:flex; align-items:center; gap:16px; opacity:0; animation:fadeIn 1s 1.2s ease forwards; pointer-events:none; }
+    .hero-dots { display:flex; gap:8px; pointer-events:auto; }
+    .hero-dot { width:24px; height:1px; background:rgba(245,240,232,0.3); cursor:pointer; transition:background 0.3s, width 0.3s; border:none; padding:0; }
+    .hero-dot.active { width:40px; background:var(--paper); }
+    .hero-counter { font-size:11px; letter-spacing:0.2em; color:rgba(245,240,232,0.35); pointer-events:none; }
+
+    /* ── Price section ── */
+    .price-section {
+      padding: 80px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-top: 1px solid rgba(245,240,232,0.06);
+    }
+
+    .price-option {
+      padding: 48px 40px;
+      border: 1px solid rgba(245,240,232,0.07);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s;
+    }
+    .price-option::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(245,240,232,0.02), transparent); }
+    .price-option:hover { border-color: rgba(232,201,122,0.2); }
+
+    .price-label { font-size:11px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--dust); margin-bottom:20px; }
+    .price-amount { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:300; color:var(--paper); line-height:1; margin-bottom:8px; }
+    .price-desc { font-size:13px; font-weight:300; color:var(--dust); line-height:1.8; margin-bottom:32px; }
+    .price-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: var(--paper);
+      border: none;
+      padding: 14px 28px;
+      cursor: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .price-btn:hover { background: var(--accent); transform: translateX(4px); }
+    .price-btn-outline { background:transparent; color:var(--paper); border:1px solid rgba(245,240,232,0.18); }
+    .price-btn-outline:hover { background:rgba(245,240,232,0.06); color:var(--paper); transform:translateX(4px); }
+
+    /* ── Details section ── */
+    .film-details {
+      padding: 80px 40px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 80px;
+      border-top: 1px solid rgba(245,240,232,0.06);
+    }
+    .detail-label { font-size:11px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--accent); margin-bottom:28px; }
+    .detail-synopsis { font-size:17px; font-weight:300; line-height:2; color:var(--dust); }
+    .detail-meta { display:flex; flex-direction:column; gap:0; }
+    .detail-meta-item { padding:18px 0; border-bottom:1px solid rgba(245,240,232,0.06); }
+    .detail-meta-key { font-size:11px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:rgba(245,240,232,0.25); margin-bottom:6px; }
+    .detail-meta-val { font-size:15px; font-weight:400; color:var(--paper); }
+
+    /* ── Footer ── */
+    footer { border-top:1px solid rgba(245,240,232,0.06); padding:48px 40px; display:flex; justify-content:space-between; align-items:center; }
+    .footer-logo { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300; letter-spacing:0.15em; color:rgba(245,240,232,0.3); }
+    .footer-copy { font-size:12px; letter-spacing:0.15em; color:rgba(245,240,232,0.2); }
+
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.9s ease, transform 0.9s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; }
+      to   { opacity:1; }
+    }
+
+    @media (max-width:768px) {
+      nav { padding:20px 24px; }
+      .hero-content { padding:0 24px 60px; }
+      .price-section { grid-template-columns:1fr; padding:60px 24px; }
+      .film-details { grid-template-columns:1fr; gap:48px; padding:60px 24px; }
+      footer { flex-direction:column; gap:16px; padding:40px 24px; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="grain"></div>
+
+  <nav>
+    <a href="/" class="nav-logo">
+      <span>noúmenon</span>
+      <span class="nav-logo-sub">by Armenak</span>
+    </a>
+    <div class="nav-right">
+      <a href="/" class="nav-back">
+        <div class="nav-back-arrow"></div>
+        <span data-en="Back" data-ru="Назад">Back</span>
+      </a>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <span class="lang-sep">/</span>
+        <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero carousel -->
+  <section class="hero">
+    <div class="hero-slides" id="heroSlides"></div>
+    <button class="hero-zone hero-zone-left"  id="heroPrev" aria-label="Previous"></button>
+    <button class="hero-zone hero-zone-right" id="heroNext" aria-label="Next"></button>
+    <div class="hero-content" id="heroContent"></div>
+    <div class="hero-controls">
+      <span class="hero-counter" id="heroCounter">1 / 4</span>
+      <div class="hero-dots" id="heroDots"></div>
+    </div>
+  </section>
+
+  <!-- Price -->
+  <section class="price-section" id="priceSection"></section>
+
+  <!-- Details -->
+  <section class="film-details" id="filmDetails"></section>
+
+  <footer>
+    <span class="footer-logo">noúmenon</span>
+    <span class="footer-copy" id="footerCopy">© 2025 noúmenon. All rights reserved.</span>
+  </footer>
+
+  <script>
+    const films = [
+      {
+        slug: "the-lyrics",
+        titleEn: "The Lyrics", titleRu: "Стих",
+        year: 2025, duration: 11,
+        genreEn: "Short Film", genreRu: "Короткий метр",
+        taglineEn: "A soundrama about love and creativity.",
+        taglineRu: "Саундрама о любви и творчестве.",
+        synopsisEn: "A soundrama about love and creativity. Three stories of lovers who separate in some dimensions and meet in others.",
+        synopsisRu: "Саундрама о любви и творчестве. Три истории о влюбленных, которые расстаются в одних измерениях и встречаются в других.",
+        frames: [
+          "url('/images/posters/the-lyrics.png') center/cover no-repeat",
+          "url('/images/posters/the-lyrics-2.png') center/cover no-repeat",
+          "url('/images/posters/the-lyrics-3.png') center/cover no-repeat",
+          "url('/images/posters/the-lyrics-4.png') center/cover no-repeat"
+        ],
+        filmUrl: "", trailerUrl: "",
+        rentPrice: 3.99, buyPrice: 9.99
+      },
+      {
+        slug: "the-drift",
+        titleEn: "The Drift", titleRu: "Дрейф",
+        year: 2026, duration: 44,
+        genreEn: "Documentary", genreRu: "Документальный фильм",
+        taglineEn: "A husband and wife travel to Iran to find their missing son.",
+        taglineRu: "История мужа и жены, которые отправляются в Иран найти пропавшего сына.",
+        synopsisEn: "A husband and wife embark on a journey across Iran searching for their missing son — a road film about loss, hope, and the distances between people.",
+        synopsisRu: "Муж и жена отправляются в путешествие по Ирану в поисках пропавшего сына — роуд-муви о потере, надежде и расстояниях между людьми.",
+        frames: [
+          "url('/images/posters/the-drift.png') center/cover no-repeat",
+          "url('/images/posters/the-drift-2.png') center/cover no-repeat",
+          "url('/images/posters/the-drift-3.png') center/cover no-repeat",
+          "url('/images/posters/the-drift-4.png') center/cover no-repeat"
+        ],
+        videoPreview: "/video/drift-trailer.mp4",
+        filmUrl: "", trailerUrl: "",
+        rentPrice: 3.99, buyPrice: 9.99
+      }
+    ];
+
+    // Текущий фильм по URL
+    const slug = window.location.pathname.split('/film/')[1];
+    const film = films.find(f => f.slug === slug) || films[0];
+
+    let frameIndex = 0;
+    let currentLang = localStorage.getItem('lang') || 'en';
+    let isTransitioning = false;
+    const TRANSITION_DUR = 1000;
+
+    // ── Двойной буфер для бесшовного зацикливания видео ──
+    function setupVideoLoop(slideEl, src, startSec, endSec) {
+      const overlay = slideEl.querySelector('.hero-slide-overlay');
+
+      function makeVideo() {
+        const v = document.createElement('video');
+        v.muted = true;
+        v.setAttribute('playsinline', '');
+        v.preload = 'auto';
+        v.className = 'hero-slide-video';
+        v.style.opacity = '0';
+        v.style.willChange = 'opacity';
+        slideEl.insertBefore(v, overlay);
+        return v;
+      }
+
+      const va = makeVideo();
+      const vb = makeVideo();
+
+      let cur = va, next = vb;
+      let rafId = null, prepared = false, firstPlay = true;
+
+      // Загружаем оба буфера сразу
+      va.src = src; vb.src = src;
+      va.load(); vb.load();
+
+      va.addEventListener('loadedmetadata', () => { va.currentTime = startSec; });
+      vb.addEventListener('loadedmetadata', () => { vb.currentTime = startSec; });
+
+      // Promise — оба видео готовы к воспроизведению без буферизации
+      const readyPromise = new Promise(resolve => {
+        let vaOk = false, vbOk = false;
+        function check() { if (vaOk && vbOk) resolve(); }
+        va.addEventListener('canplaythrough', () => { vaOk = true; check(); }, { once: true });
+        vb.addEventListener('canplaythrough', () => { vbOk = true; check(); }, { once: true });
+      });
+
+      function tick() {
+        const t = cur.currentTime;
+        if (!prepared && t >= endSec - 0.6) {
+          prepared = true;
+          next.currentTime = startSec;
+          next.play().catch(() => {});
+        }
+        if (t >= endSec) {
+          cur.style.opacity  = '0';
+          next.style.opacity = '1';
+          const old = cur; cur = next; next = old;
+          old.pause(); old.currentTime = startSec;
+          prepared = false;
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      return {
+        play() {
+          // Ждём полной готовности обоих буферов, затем плавно появляемся
+          readyPromise.then(() => {
+            cur.play().catch(() => {});
+            if (!rafId) rafId = requestAnimationFrame(tick);
+            if (firstPlay) {
+              firstPlay = false;
+              cur.style.transition = 'opacity 2s ease';
+              requestAnimationFrame(() => {
+                cur.style.opacity = '1';
+                setTimeout(() => { cur.style.transition = 'opacity 0.08s linear'; }, 2100);
+              });
+            }
+          });
+        },
+        pause() {
+          va.pause(); vb.pause();
+          if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+          prepared = false;
+        },
+        reset() {
+          this.pause();
+          va.style.opacity = '0'; vb.style.opacity = '0';
+          cur = va; next = vb; firstPlay = true;
+          va.currentTime = startSec; vb.currentTime = startSec;
+        }
+      };
+    }
+
+    const videoControllers = {};
+
+    // ── Init slides (кадры текущего фильма) ──
+    function initHeroSlides() {
+      const slidesEl = document.getElementById('heroSlides');
+      slidesEl.innerHTML = film.frames.map((bg, i) => `
+        <div class="hero-slide${i === 0 ? ' active' : ''}" style="background: ${bg};">
+          <div class="hero-slide-overlay"></div>
+        </div>`).join('');
+
+      if (film.videoPreview) {
+        const firstSlide = slidesEl.querySelectorAll('.hero-slide')[0];
+        videoControllers[0] = setupVideoLoop(firstSlide, film.videoPreview, 43, 49);
+        // play() сам ждёт canplaythrough обоих буферов перед показом
+        videoControllers[0].play();
+      }
+
+      document.getElementById('heroDots').innerHTML = film.frames.map((_, i) => `
+        <button class="hero-dot${i === 0 ? ' active' : ''}"
+                onclick="goFrame(${i})" aria-label="Frame ${i+1}"></button>`).join('');
+    }
+
+    // ── Hero text (не меняется при смене кадра) ──
+    function updateHeroContent(animate) {
+      const isRu = currentLang === 'ru';
+      const title        = isRu ? film.titleRu   : film.titleEn;
+      const tagline      = isRu ? film.taglineRu : film.taglineEn;
+      const genre        = isRu ? film.genreRu   : film.genreEn;
+      const watchLabel   = isRu ? 'Смотреть фильм' : 'Watch film';
+      const trailerLabel = isRu ? 'Трейлер' : 'Trailer';
+
+      document.title = `${title} — noúmenon`;
+
+      const trailerBtn = film.trailerUrl
+        ? `<a href="${film.trailerUrl}" target="_blank" class="hero-trailer-btn">
+             <div class="hero-trailer-icon"><svg viewBox="0 0 8 9"><polygon points="0,0 8,4.5 0,9"/></svg></div>
+             <span>${trailerLabel}</span>
+           </a>`
+        : '';
+
+      const watchBtn = film.filmUrl
+        ? `<a href="${film.filmUrl}" target="_blank" class="hero-film-link">
+             <span>${watchLabel}</span>
+             <div class="hero-film-link-line"></div>
+           </a>`
+        : '';
+
+      const html = `
+        <p class="hero-film-label">${genre} · ${film.year} · ${film.duration}${isRu ? ' мин' : ' min'}</p>
+        <h1 class="hero-film-title"><em>${title}</em></h1>
+        <p class="hero-film-desc">${tagline}</p>
+        <div class="hero-btns">${watchBtn}${trailerBtn}</div>`;
+
+      const el = document.getElementById('heroContent');
+
+      if (!animate) {
+        el.innerHTML = html;
+        el.style.transition = '';
+        el.style.opacity    = '1';
+        el.style.transform  = 'translateY(0)';
+        return;
+      }
+
+      el.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+      el.style.opacity    = '0';
+      el.style.transform  = 'translateY(10px)';
+      setTimeout(() => {
+        el.innerHTML = html;
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        el.style.opacity    = '1';
+        el.style.transform  = 'translateY(0)';
+      }, 360);
+    }
+
+    function updateDots() {
+      document.querySelectorAll('.hero-dot').forEach((d, i) =>
+        d.classList.toggle('active', i === frameIndex));
+      document.getElementById('heroCounter').textContent =
+        `${frameIndex + 1} / ${film.frames.length}`;
+    }
+
+    // ── Переход между кадрами ──
+    function goFrame(idx) {
+      if (isTransitioning) return;
+      const next = ((idx % film.frames.length) + film.frames.length) % film.frames.length;
+      if (next === frameIndex) return;
+      isTransitioning = true;
+
+      const slides  = document.querySelectorAll('.hero-slide');
+      const current = slides[frameIndex];
+      const nextEl  = slides[next];
+      const ease    = `${TRANSITION_DUR}ms cubic-bezier(0.4,0,0.2,1)`;
+
+      nextEl.style.transition = 'none';
+      nextEl.style.transform  = 'scale(1.06)';
+      nextEl.style.opacity    = '0';
+      nextEl.classList.add('active');
+      nextEl.getBoundingClientRect();
+
+      current.style.transition = `opacity ${ease}, transform ${ease}`;
+      current.style.transform  = 'scale(1.08)';
+      current.style.opacity    = '0';
+
+      nextEl.style.transition = `opacity ${ease}, transform ${ease}`;
+      nextEl.style.transform  = 'scale(1)';
+      nextEl.style.opacity    = '1';
+
+      // Пауза текущего видео, запуск следующего (если есть)
+      if (videoControllers[frameIndex]) videoControllers[frameIndex].pause();
+
+      frameIndex = next;
+      updateDots();
+
+      if (videoControllers[frameIndex]) videoControllers[frameIndex].play();
+
+      setTimeout(() => {
+        current.classList.remove('active');
+        current.style.transition = '';
+        current.style.transform  = '';
+        current.style.opacity    = '';
+        isTransitioning = false;
+      }, TRANSITION_DUR);
+    }
+
+    document.getElementById('heroPrev').addEventListener('click', () => goFrame(frameIndex - 1));
+    document.getElementById('heroNext').addEventListener('click', () => goFrame(frameIndex + 1));
+
+    // ── Below the hero ──
+    function renderBelow() {
+      const f    = film;
+      const isRu = currentLang === 'ru';
+
+      const rentLabel    = isRu ? 'Аренда'    : 'Rent';
+      const buyLabel     = isRu ? 'Купить'    : 'Buy';
+      const rentDesc     = isRu ? '48-часовой доступ к фильму.' : '48-hour streaming access.';
+      const buyDesc      = isRu ? 'Постоянный доступ в вашей библиотеке.' : 'Permanent access in your library.';
+      const rentCta      = isRu ? 'Арендовать' : 'Rent Now';
+      const buyCta       = isRu ? 'Купить'    : 'Buy Now';
+      const synopsisLbl  = isRu ? 'Синопсис'  : 'Synopsis';
+      const directorLbl  = isRu ? 'Режиссёр'  : 'Director';
+      const yearLbl      = isRu ? 'Год'        : 'Year';
+      const durationLbl  = isRu ? 'Хронометраж' : 'Runtime';
+      const durationVal  = isRu ? `${f.duration} мин` : `${f.duration} min`;
+      const genreLbl     = isRu ? 'Жанр'      : 'Genre';
+      const synopsis     = isRu ? f.synopsisRu : f.synopsisEn;
+      const genre        = isRu ? f.genreRu   : f.genreEn;
+
+      document.getElementById('priceSection').innerHTML = `
+        <div class="price-option reveal">
+          <p class="price-label">${rentLabel}</p>
+          <p class="price-amount">$${f.rentPrice.toFixed(2)}</p>
+          <p class="price-desc">${rentDesc}</p>
+          <button class="price-btn" onclick="handlePurchase('rent')">${rentCta}</button>
+        </div>
+        <div class="price-option reveal">
+          <p class="price-label">${buyLabel}</p>
+          <p class="price-amount">$${f.buyPrice.toFixed(2)}</p>
+          <p class="price-desc">${buyDesc}</p>
+          <button class="price-btn price-btn-outline" onclick="handlePurchase('buy')">${buyCta}</button>
+        </div>`;
+
+      document.getElementById('filmDetails').innerHTML = `
+        <div>
+          <p class="detail-label reveal">${synopsisLbl}</p>
+          <p class="detail-synopsis reveal">${synopsis}</p>
+        </div>
+        <div class="detail-meta">
+          <div class="detail-meta-item reveal">
+            <p class="detail-meta-key">${directorLbl}</p>
+            <p class="detail-meta-val">Armenak</p>
+          </div>
+          <div class="detail-meta-item reveal">
+            <p class="detail-meta-key">${yearLbl}</p>
+            <p class="detail-meta-val">${f.year}</p>
+          </div>
+          <div class="detail-meta-item reveal">
+            <p class="detail-meta-key">${durationLbl}</p>
+            <p class="detail-meta-val">${durationVal}</p>
+          </div>
+          <div class="detail-meta-item reveal">
+            <p class="detail-meta-key">${genreLbl}</p>
+            <p class="detail-meta-val">${genre}</p>
+          </div>
+        </div>`;
+
+      document.getElementById('footerCopy').textContent =
+        isRu ? '© 2025 noúmenon. Все права защищены.' : '© 2025 noúmenon. All rights reserved.';
+
+      observeReveal();
+    }
+
+    function handlePurchase(type) {
+      const msg = currentLang === 'ru'
+        ? 'Платёжная интеграция (Stripe) будет подключена.'
+        : 'Payment integration (Stripe) coming soon.';
+      alert(msg);
+    }
+
+    function observeReveal() {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e, i) => {
+          if (e.isIntersecting) {
+            setTimeout(() => e.target.classList.add('visible'), i * 80);
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      document.documentElement.setAttribute('data-lang', lang);
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = lang === 'ru' ? el.dataset.ru : el.dataset.en;
+      });
+      updateHeroContent(true);
+      updateDots();
+      renderBelow();
+    }
+
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx=0, my=0, rx=0, ry=0;
+    document.addEventListener('mousemove', e => {
+      mx=e.clientX; my=e.clientY;
+      cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+    });
+    (function animate() {
+      rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+      ring.style.left=rx+'px'; ring.style.top=ry+'px';
+      requestAnimationFrame(animate);
+    })();
+    document.addEventListener('mouseover', e => {
+      if (e.target.closest('a, button')) ring.classList.add('hovering');
+      else ring.classList.remove('hovering');
+    });
+
+    // Init
+    initHeroSlides();
+    updateHeroContent(false);
+    updateDots();
+    renderBelow();
+    setLang(currentLang);
+  </script>
+</body>
+</html>
