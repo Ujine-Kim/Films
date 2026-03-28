@@ -351,6 +351,73 @@
       .film-act-btns { flex-direction: column; gap: 10px; }
       .btn-view-film, .btn-buy-film { text-align: center; }
     }
+
+    /* ---- ACT 4: Interstitial ---- */
+    .act--breath {
+      min-height: 60vh;
+      background: #040404;
+      display: flex; align-items: center; justify-content: center;
+      padding: 80px 8vw;
+    }
+    .act4-grain {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.1'/%3E%3C/svg%3E");
+    }
+    .act4-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(18px, 3vw, 28px);
+      color: #1a1814; text-align: center;
+      max-width: 640px; line-height: 1.7; letter-spacing: 0.5px;
+      border: none; margin: 0; padding: 0;
+      position: relative; z-index: 1;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 1.2s ease, transform 1.2s ease, color 1.2s ease;
+    }
+    .act4-quote.visible { opacity: 1; transform: translateY(0); color: #8a8070; }
+
+    /* ---- ACT 6: The Close ---- */
+    .act--close {
+      min-height: 80vh;
+      background: #040404;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .act6-grain {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+    }
+    .act6-content {
+      position: relative; z-index: 1;
+      text-align: center; display: flex;
+      flex-direction: column; align-items: center; gap: 16px;
+    }
+    .act6-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 8vw, 88px);
+      color: var(--paper); letter-spacing: 10px; font-weight: 300;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .act6-name {
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      font-size: 11px; letter-spacing: 5px; color: #4a4030;
+      text-transform: uppercase;
+      opacity: 0; transition: opacity 1s ease 0.3s;
+    }
+    .act6-line {
+      font-family: 'Montserrat', sans-serif; font-size: 12px;
+      color: #3a3028; letter-spacing: 1px; margin-top: 8px;
+      opacity: 0; transition: opacity 1s ease 0.5s;
+    }
+    .act6-contact {
+      font-size: 9px; letter-spacing: 3px; color: #5a5040;
+      text-transform: uppercase; text-decoration: none;
+      opacity: 0; transition: opacity 1s ease 0.7s, color 0.3s;
+      margin-top: 8px;
+    }
+    .act6-contact:hover { color: #8a8070; }
+    .act6-logo.visible { opacity: 1; transform: translateY(0); }
+    .act6-name.visible, .act6-line.visible, .act6-contact.visible { opacity: 1; }
   </style>
 </head>
 <body>
@@ -410,13 +477,25 @@
     <section id="act3" class="act act--film" data-film-index="0"></section>
 
     <!-- Act 4: Breath (placeholder) -->
-    <section id="act4" class="act act--breath"></section>
+    <section id="act4" class="act act--breath">
+      <div class="act4-grain"></div>
+      <!-- Empty on load — JS sets the correct language text on IntersectionObserver trigger -->
+      <blockquote class="act4-quote" id="act4-quote"></blockquote>
+    </section>
 
     <!-- Act 5: Film 1 (placeholder) -->
     <section id="act5" class="act act--film" data-film-index="1"></section>
 
     <!-- Act 6: Close (placeholder) -->
-    <section id="act6" class="act act--close"></section>
+    <section id="act6" class="act act--close">
+      <div class="act6-grain"></div>
+      <div class="act6-content">
+        <div class="act6-logo">NOÚMENON</div>
+        <div class="act6-name" data-en="by Armenak" data-ru="от Арменака">by Armenak</div>
+        <p class="act6-line" data-en="New films in production." data-ru="Новые фильмы в производстве.">New films in production.</p>
+        <a href="mailto:press@noumenon.film" class="act6-contact" data-en="Press & Inquiries" data-ru="Пресса и запросы">Press & Inquiries</a>
+      </div>
+    </section>
 
   </main>
 
@@ -663,6 +742,44 @@
     function handlePurchase(type) {
       alert('Purchase flow coming soon! Type: ' + type);
     }
+
+    // ---- ACT 4: Quote reveal ----
+    function getAct4Quote(lang) {
+      // Use first award quote if available, otherwise fallback
+      for (const film of films) {
+        if (film.awards && film.awards.length > 0) {
+          return lang === 'ru' ? film.awards[0].quoteRu : film.awards[0].quote;
+        }
+      }
+      return lang === 'ru'
+        ? '«Между звуком и тишиной есть момент, когда всё становится правдой.»'
+        : '"Between sound and silence, there is a moment where everything is true."';
+    }
+
+    const act4QuoteEl = document.getElementById('act4-quote');
+    const act4Observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const lang = localStorage.getItem('noumenon-lang') || 'en';
+        act4QuoteEl.textContent = getAct4Quote(lang);
+        act4QuoteEl.classList.add('visible');
+        act4Observer.disconnect();
+      });
+    }, { threshold: 0.3 });
+    act4Observer.observe(document.getElementById('act4'));
+
+    // ---- ACT 6: Reveal ----
+    const act6Observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        document.querySelector('.act6-logo').classList.add('visible');
+        document.querySelector('.act6-name').classList.add('visible');
+        document.querySelector('.act6-line').classList.add('visible');
+        document.querySelector('.act6-contact').classList.add('visible');
+        act6Observer.disconnect();
+      });
+    }, { threshold: 0.2 });
+    act6Observer.observe(document.getElementById('act6'));
   </script>
 </body>
 </html>
