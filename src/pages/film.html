@@ -83,45 +83,38 @@
     .hero-counter { font-size:11px; letter-spacing:0.2em; color:rgba(245,240,232,0.35); pointer-events:none; }
 
     /* ── Price section ── */
-    .price-section {
-      padding: 80px 40px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      border-top: 1px solid rgba(245,240,232,0.06);
+    .price-section { padding: 80px 8vw; }
+    .buy-card {
+      max-width: 420px;
+      border: 1px solid #2a2418;
+      padding: 40px;
+      background: #0f0c08;
     }
-
-    .price-option {
-      padding: 48px 40px;
-      border: 1px solid rgba(245,240,232,0.07);
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.4s;
+    .buy-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px; letter-spacing: 3px;
+      color: #6a6050; text-transform: uppercase;
+      margin-bottom: 16px;
     }
-    .price-option::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(245,240,232,0.02), transparent); }
-    .price-option:hover { border-color: rgba(232,201,122,0.2); }
-
-    .price-label { font-size:11px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--dust); margin-bottom:20px; }
-    .price-amount { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:300; color:var(--paper); line-height:1; margin-bottom:8px; }
-    .price-desc { font-size:13px; font-weight:300; color:var(--dust); line-height:1.8; margin-bottom:32px; }
-    .price-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--ink);
-      background: var(--paper);
-      border: none;
-      padding: 14px 28px;
-      cursor: none;
-      transition: background 0.3s, transform 0.2s;
+    .buy-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px; color: var(--paper);
+      line-height: 1; margin-bottom: 16px;
     }
-    .price-btn:hover { background: var(--accent); transform: translateX(4px); }
-    .price-btn-outline { background:transparent; color:var(--paper); border:1px solid rgba(245,240,232,0.18); }
-    .price-btn-outline:hover { background:rgba(245,240,232,0.06); color:var(--paper); transform:translateX(4px); }
+    .buy-desc {
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      font-size: 12px; color: #5a5040; line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .buy-btn {
+      width: 100%; padding: 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      background: var(--paper); color: var(--ink);
+      border: none; cursor: pointer; font-weight: 600;
+      transition: opacity 0.3s;
+    }
+    .buy-btn:hover { opacity: 0.85; }
 
     /* ── Details section ── */
     .film-details {
@@ -137,6 +130,30 @@
     .detail-meta-item { padding:18px 0; border-bottom:1px solid rgba(245,240,232,0.06); }
     .detail-meta-key { font-size:11px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:rgba(245,240,232,0.25); margin-bottom:6px; }
     .detail-meta-val { font-size:15px; font-weight:400; color:var(--paper); }
+
+    /* ── Awards section ── */
+    .awards-section {
+      padding: 60px 8vw;
+      border-top: 1px solid #1a1814;
+    }
+    .awards-label {
+      font-size: 9px; letter-spacing: 3px; color: #4a4030;
+      text-transform: uppercase; margin-bottom: 32px;
+    }
+    .award-item {
+      border-left: 2px solid var(--film-accent, #c4b08a);
+      padding-left: 24px; margin-bottom: 32px;
+    }
+    .award-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 20px;
+      color: #8a8070; line-height: 1.6;
+      border: none; margin: 0 0 10px 0; padding: 0;
+    }
+    .award-source {
+      font-size: 9px; letter-spacing: 2px; color: #4a4030;
+      text-transform: uppercase; font-style: normal;
+    }
 
     /* ── Footer ── */
     footer { border-top:1px solid rgba(245,240,232,0.06); padding:48px 40px; display:flex; justify-content:space-between; align-items:center; }
@@ -158,7 +175,7 @@
     @media (max-width:768px) {
       nav { padding:20px 24px; }
       .hero-content { padding:0 24px 60px; }
-      .price-section { grid-template-columns:1fr; padding:60px 24px; }
+      .price-section { padding:60px 24px; }
       .film-details { grid-template-columns:1fr; gap:48px; padding:60px 24px; }
       footer { flex-direction:column; gap:16px; padding:40px 24px; text-align:center; }
     }
@@ -185,6 +202,11 @@
         <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
       </div>
     </div>
+    <div id="read-progress" style="
+      position: absolute; bottom: 0; left: 0; height: 1px;
+      width: 0%; transition: width 0.1s linear;
+      background: var(--film-accent, #c4b08a);
+    "></div>
   </nav>
 
   <!-- Hero carousel -->
@@ -200,10 +222,13 @@
   </section>
 
   <!-- Price -->
-  <section class="price-section" id="priceSection"></section>
+  <div id="priceSectionWrap"></div>
 
   <!-- Details -->
   <section class="film-details" id="filmDetails"></section>
+
+  <!-- Awards -->
+  <div id="awardsSection"></div>
 
   <footer>
     <span class="footer-logo">noúmenon</span>
@@ -228,7 +253,9 @@
           "url('/images/posters/the-lyrics-4.png') center/cover no-repeat"
         ],
         filmUrl: "", trailerUrl: "",
-        buyPrice: 9.99
+        buyPrice: 9.99,
+        accentColor: "#c4b08a",
+        awards: []
       },
       {
         slug: "the-drift",
@@ -247,7 +274,9 @@
         ],
         videoPreview: "/video/drift-trailer.mp4",
         filmUrl: "", trailerUrl: "",
-        buyPrice: 9.99
+        buyPrice: 9.99,
+        accentColor: "#c47a4a",
+        awards: []
       }
     ];
 
@@ -255,10 +284,22 @@
     const slug = window.location.pathname.split('/film/')[1];
     const film = films.find(f => f.slug === slug) || films[0];
 
+    // Set film accent color CSS variable
+    document.documentElement.style.setProperty('--film-accent', film.accentColor);
+
     let frameIndex = 0;
     let currentLang = localStorage.getItem('lang') || 'en';
     let isTransitioning = false;
     const TRANSITION_DUR = 1000;
+
+    // ── Read progress bar ────────────────────────────────────────────────────
+    const progressBar = document.getElementById('read-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    });
 
     // ── Двойной буфер для бесшовного зацикливания видео ──
     function setupVideoLoop(slideEl, src, startSec, endSec) {
@@ -471,17 +512,52 @@
     document.getElementById('heroPrev').addEventListener('click', () => goFrame(frameIndex - 1));
     document.getElementById('heroNext').addEventListener('click', () => goFrame(frameIndex + 1));
 
+    // ── Price section ──
+    function renderPriceSection(f) {
+      const lang = localStorage.getItem('lang') || 'en';
+      return `
+        <div class="price-section">
+          <div class="buy-card">
+            <div class="buy-label" data-en="Own Forever" data-ru="Навсегда">
+              ${lang === 'ru' ? 'Навсегда' : 'Own Forever'}
+            </div>
+            <div class="buy-amount">$${f.buyPrice.toFixed(2)}</div>
+            <p class="buy-desc" data-en="Permanent access. Support independent cinema directly." data-ru="Постоянный доступ. Поддержите независимое кино напрямую.">
+              ${lang === 'ru' ? 'Постоянный доступ. Поддержите независимое кино напрямую.' : 'Permanent access. Support independent cinema directly.'}
+            </p>
+            <button class="buy-btn" onclick="handlePurchase('buy')">
+              ${lang === 'ru' ? 'Купить фильм' : 'Buy Film'}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ── Awards section ──
+    function renderAwards(f) {
+      if (!f.awards || f.awards.length === 0) return '';
+      const lang = localStorage.getItem('lang') || 'en';
+      const awardsHtml = f.awards.map(a => `
+        <div class="award-item">
+          <blockquote class="award-quote">${lang === 'ru' ? a.quoteRu : a.quote}</blockquote>
+          <cite class="award-source">${a.source}</cite>
+        </div>
+      `).join('');
+      return `
+        <div class="awards-section">
+          <div class="awards-label" data-en="Recognition" data-ru="Признание">
+            ${lang === 'ru' ? 'Признание' : 'Recognition'}
+          </div>
+          ${awardsHtml}
+        </div>
+      `;
+    }
+
     // ── Below the hero ──
     function renderBelow() {
       const f    = film;
       const isRu = currentLang === 'ru';
 
-      const rentLabel    = isRu ? 'Аренда'    : 'Rent';
-      const buyLabel     = isRu ? 'Купить'    : 'Buy';
-      const rentDesc     = isRu ? '48-часовой доступ к фильму.' : '48-hour streaming access.';
-      const buyDesc      = isRu ? 'Постоянный доступ в вашей библиотеке.' : 'Permanent access in your library.';
-      const rentCta      = isRu ? 'Арендовать' : 'Rent Now';
-      const buyCta       = isRu ? 'Купить'    : 'Buy Now';
       const synopsisLbl  = isRu ? 'Синопсис'  : 'Synopsis';
       const directorLbl  = isRu ? 'Режиссёр'  : 'Director';
       const yearLbl      = isRu ? 'Год'        : 'Year';
@@ -491,13 +567,7 @@
       const synopsis     = isRu ? f.synopsisRu : f.synopsisEn;
       const genre        = isRu ? f.genreRu   : f.genreEn;
 
-      document.getElementById('priceSection').innerHTML = `
-        <div class="price-option reveal">
-          <p class="price-label">${buyLabel}</p>
-          <p class="price-amount">$${f.buyPrice.toFixed(2)}</p>
-          <p class="price-desc">${buyDesc}</p>
-          <button class="price-btn price-btn-outline" onclick="handlePurchase('buy')">${buyCta}</button>
-        </div>`;
+      document.getElementById('priceSectionWrap').innerHTML = renderPriceSection(f);
 
       document.getElementById('filmDetails').innerHTML = `
         <div>
@@ -522,6 +592,8 @@
             <p class="detail-meta-val">${genre}</p>
           </div>
         </div>`;
+
+      document.getElementById('awardsSection').innerHTML = renderAwards(f);
 
       document.getElementById('footerCopy').textContent =
         isRu ? '© 2025 noúmenon. Все права защищены.' : '© 2025 noúmenon. All rights reserved.';
