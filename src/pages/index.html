@@ -560,6 +560,48 @@
       // Update Act 2 location from director data
       const locationEl = document.getElementById('act2-location');
       if (locationEl) locationEl.textContent = 'Yerevan · Amsterdam';
+
+      // Re-run Act 1 typewriter if Act 1 is still in view
+      const act1El = document.getElementById('act1');
+      if (act1El) {
+        const rect = act1El.getBoundingClientRect();
+        if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+          document.querySelector('.act1-logo').classList.remove('visible');
+          runAct1();
+        }
+      }
+
+      // Re-render film acts and re-apply reveal classes
+      document.querySelectorAll('.act--film').forEach(section => {
+        const idx = parseInt(section.dataset.filmIndex);
+        if (!films[idx]) return;
+
+        // Track which classes were active before re-render
+        const wasRevealed = section.querySelector('.film-act-poster')?.classList.contains('revealed');
+        const wasVisible = section.querySelector('.film-act-title')?.classList.contains('visible');
+
+        renderFilmAct(section, films[idx]);
+
+        // Re-apply reveal state if section was already scrolled into view
+        if (wasRevealed) {
+          section.querySelector('.film-act-poster')?.classList.add('revealed');
+        }
+        if (wasVisible) {
+          ['film-act-genre','film-act-title','film-act-tagline','film-act-btns'].forEach(cls => {
+            section.querySelector('.' + cls)?.classList.add('visible');
+          });
+          section.querySelector('.film-act-award')?.classList.add('visible');
+          // Re-start video if present
+          const video = section.querySelector('.film-act-bg-video');
+          if (video) { video.play().catch(()=>{}); video.classList.add('playing'); }
+        }
+      });
+
+      // Update Act 4 quote if already visible
+      const act4El = document.getElementById('act4-quote');
+      if (act4El && act4El.classList.contains('visible')) {
+        act4El.textContent = getAct4Quote(lang);
+      }
     }
 
     // Custom cursor
