@@ -208,6 +208,50 @@
       animation: pulse 2.5s ease-in-out infinite;
     }
     @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+    /* ---- ACT 2 ---- */
+    .act--director {
+      background: #080808;
+      display: flex; align-items: flex-end;
+    }
+    .act2-parallax {
+      position: absolute; inset: -20%; /* oversized for parallax movement */
+      background: linear-gradient(135deg, #1a1510 0%, #0a0808 60%, #060606 100%);
+      will-change: transform;
+    }
+    .act2-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #080808 0%, rgba(8,8,8,0.3) 60%, transparent 100%);
+    }
+    .act2-content {
+      position: relative; z-index: 1;
+      padding: 0 8vw 80px;
+      max-width: 640px;
+    }
+    .act2-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      color: var(--paper); letter-spacing: 8px;
+      text-transform: uppercase;
+      margin-bottom: 20px; min-height: 60px;
+    }
+    .act2-name span { opacity: 0; transition: opacity 0.3s ease; display: inline-block; }
+    .act2-name span.visible { opacity: 1; }
+    .act2-bio {
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      font-size: 14px; color: #8a8070; line-height: 1.9;
+      letter-spacing: 0.3px; margin-bottom: 16px;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+    }
+    .act2-bio.visible { opacity: 1; transform: translateY(0); }
+    .act2-location {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px; letter-spacing: 4px;
+      color: #4a4030; text-transform: uppercase;
+      opacity: 0; transition: opacity 0.8s ease 0.7s;
+    }
+    .act2-location.visible { opacity: 1; }
   </style>
 </head>
 <body>
@@ -250,8 +294,18 @@
       <div class="act1-scroll-hint" data-en="scroll to begin ↓" data-ru="прокрутите ↓">scroll to begin ↓</div>
     </section>
 
-    <!-- Act 2: Director (placeholder) -->
-    <section id="act2" class="act act--director"></section>
+    <!-- Act 2: Director -->
+    <section id="act2" class="act act--director">
+      <div class="act2-parallax" id="act2-parallax"></div>
+      <div class="act2-overlay"></div>
+      <div class="act2-content">
+        <div class="act2-name" id="act2-name"></div>
+        <p class="act2-bio" data-en="A filmmaker working at the intersection of documentary and fiction — searching for the moment truth becomes story." data-ru="Режиссёр, работающий на пересечении документального и игрового кино — в поисках момента, когда правда становится историей.">
+          A filmmaker working at the intersection of documentary and fiction — searching for the moment truth becomes story.
+        </p>
+        <p class="act2-location" id="act2-location">Yerevan · Amsterdam</p>
+      </div>
+    </section>
 
     <!-- Act 3: Film 0 (placeholder) -->
     <section id="act3" class="act act--film" data-film-index="0"></section>
@@ -324,6 +378,10 @@
       document.querySelectorAll('[data-en]').forEach(el => {
         el.textContent = lang === 'ru' ? el.dataset.ru : el.dataset.en;
       });
+
+      // Update Act 2 location from director data
+      const locationEl = document.getElementById('act2-location');
+      if (locationEl) locationEl.textContent = 'Yerevan · Amsterdam';
     }
 
     // Custom cursor
@@ -387,6 +445,47 @@
       });
     }, { threshold: 0.8 });
     navObserver.observe(act1Section);
+
+    // ---- ACT 2: Letter reveal + parallax ----
+    function buildLetterSpans(text) {
+      return text.split('').map(ch =>
+        `<span>${ch === ' ' ? '&nbsp;' : ch}</span>`
+      ).join('');
+    }
+
+    const act2Name = document.getElementById('act2-name');
+    act2Name.innerHTML = buildLetterSpans('Armenak');
+
+    const act2Observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        // Reveal letters staggered
+        act2Name.querySelectorAll('span').forEach((s, i) => {
+          setTimeout(() => s.classList.add('visible'), i * 80);
+        });
+        // Reveal bio + location
+        document.querySelector('.act2-bio').classList.add('visible');
+        document.querySelector('.act2-location').classList.add('visible');
+        act2Observer.disconnect();
+      });
+    }, { threshold: 0.2 });
+    act2Observer.observe(document.getElementById('act2'));
+
+    // Parallax — desktop only
+    function isMobile() { return window.innerWidth < 768; }
+    const act2Parallax = document.getElementById('act2-parallax');
+    let rafPending = false;
+    window.addEventListener('scroll', () => {
+      if (isMobile() || rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        const act2 = document.getElementById('act2');
+        const rect = act2.getBoundingClientRect();
+        const progress = -rect.top / window.innerHeight;
+        act2Parallax.style.transform = `translateY(${progress * 40 * 0.4}px)`;
+        rafPending = false;
+      });
+    });
 
     // Init language
     setLang(currentLang);
