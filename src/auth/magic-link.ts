@@ -22,7 +22,7 @@ export async function sendMagicCode(email: string): Promise<string> {
   const r = getResend();
   if (r) {
     await r.emails.send({
-      from: 'Armenak Films <noreply@armenakfilms.com>',
+      from: 'Armenak Films <noreply@phenomenonfilms.art>',
       to: email,
       subject: `Your login code: ${code}`,
       html: `
