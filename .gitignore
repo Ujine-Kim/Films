@@ -1,5 +1,6 @@
 node_modules
 dist
-.vercel
-
-.vercel
+.env
+data.db
+videos/*.mov
+videos/*.mp4

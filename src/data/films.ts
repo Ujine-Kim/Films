@@ -16,6 +16,8 @@ export interface Film {
   awards: { source: string; quote: string; quoteRu: string }[];
   rentPrice: number; // USD
   buyPrice: number;  // USD
+  trailerFile: string; // filename in /videos/
+  filmFile: string;    // filename in /videos/
 }
 
 export const films: Film[] = [
@@ -36,7 +38,9 @@ export const films: Film[] = [
     accentColor: "#c4b08a",
     awards: [],
     rentPrice: 3.99,
-    buyPrice: 9.99
+    buyPrice: 9.99,
+    trailerFile: "the-lyrics-trailer.mov",
+    filmFile: "the-lyrics-full.mov"
   },
   {
     id: "2",
@@ -55,7 +59,9 @@ export const films: Film[] = [
     accentColor: "#c47a4a",
     awards: [],
     rentPrice: 3.99,
-    buyPrice: 9.99
+    buyPrice: 9.99,
+    trailerFile: "the-drift-trailer.mov",
+    filmFile: "the-drift-full.mov"
   }
 ];
 

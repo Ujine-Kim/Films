@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: armenak
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-armenak_secret_change_me}
+      POSTGRES_DB: armenak_films
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  app:
+    build: .
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgres://armenak:${DB_PASSWORD:-armenak_secret_change_me}@db:5432/armenak_films
+      JWT_SECRET: ${JWT_SECRET:-change-me-to-random-string-32-chars}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+    volumes:
+      - ./videos:/app/videos
+
+volumes:
+  pgdata:

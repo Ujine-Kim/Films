@@ -12,7 +12,6 @@
   ],
   "routes": [
     { "src": "/images/(.*)", "dest": "/public/images/$1" },
-    { "src": "/video/(.*)", "dest": "/public/video/$1" },
     { "src": "/(.*)", "dest": "/src/server.ts" }
   ]
 }

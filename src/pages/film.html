@@ -33,12 +33,12 @@
     .nav-logo { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:300; letter-spacing:0.12em; color:var(--paper); text-decoration:none; display:flex; flex-direction:column; align-items:flex-start; gap:1px; line-height:1; }
     .nav-logo-sub { font-size:13px; font-family:'Montserrat',sans-serif; font-weight:400; letter-spacing:0.22em; text-transform:uppercase; color:var(--dust); margin-left:2px; }
     .nav-right { display:flex; align-items:center; gap:32px; }
-    .nav-back { font-size:12px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--dust); text-decoration:none; transition:color 0.3s; display:flex; align-items:center; gap:10px; }
+    .nav-back { font-size:16px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--dust); text-decoration:none; transition:color 0.3s; display:flex; align-items:center; gap:10px; }
     .nav-back:hover { color:var(--paper); }
     .nav-back-arrow { width:20px; height:1px; background:currentColor; position:relative; }
     .nav-back-arrow::before { content:''; position:absolute; left:0; top:-3px; width:6px; height:6px; border-bottom:1px solid currentColor; border-left:1px solid currentColor; transform:rotate(45deg); }
     .lang-toggle { display:flex; align-items:center; gap:6px; }
-    .lang-btn { background:none; border:none; color:var(--dust); cursor:none; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.15em; transition:color 0.3s; padding:0; }
+    .lang-btn { background:none; border:none; color:var(--dust); cursor:none; font-family:'Montserrat',sans-serif; font-size:16px; font-weight:500; letter-spacing:0.15em; transition:color 0.3s; padding:0; }
     .lang-btn.active { color:var(--paper); }
     .lang-sep { color:var(--dust); opacity:0.4; }
 
@@ -58,18 +58,18 @@
 
     /* Hero text */
     .hero-content { position:absolute; bottom:0; left:0; right:0; z-index:6; padding:0 40px 80px; }
-    .hero-film-label { font-size:11px; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; opacity:0; animation:fadeUp 1s 0.3s ease forwards; }
+    .hero-film-label { font-size:18px; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; opacity:0; animation:fadeUp 1s 0.3s ease forwards; }
     .hero-film-title { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,7vw,100px); font-weight:300; line-height:0.92; color:var(--paper); margin-bottom:20px; opacity:0; animation:fadeUp 1s 0.5s ease forwards; }
     .hero-film-title em { font-style:italic; }
-    .hero-film-desc { font-size:14px; font-weight:300; letter-spacing:0.08em; color:var(--dust); max-width:480px; line-height:1.9; margin-bottom:32px; opacity:0; animation:fadeUp 1s 0.7s ease forwards; }
+    .hero-film-desc { font-size:22px; font-weight:300; letter-spacing:0.08em; color:var(--dust); max-width:480px; line-height:1.9; margin-bottom:32px; opacity:0; animation:fadeUp 1s 0.7s ease forwards; }
     .hero-btns { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
 
-    .hero-film-link { display:inline-flex; align-items:center; gap:12px; font-size:12px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--paper); text-decoration:none; opacity:0; animation:fadeUp 1s 0.9s ease forwards; transition:color 0.3s; }
+    .hero-film-link { display:inline-flex; align-items:center; gap:12px; font-size:18px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--paper); text-decoration:none; opacity:0; animation:fadeUp 1s 0.9s ease forwards; transition:color 0.3s; }
     .hero-film-link:hover { color:var(--accent); }
     .hero-film-link-line { width:40px; height:1px; background:currentColor; transition:width 0.3s; }
     .hero-film-link:hover .hero-film-link-line { width:60px; }
 
-    .hero-trailer-btn { display:inline-flex; align-items:center; gap:10px; font-size:12px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:rgba(245,240,232,0.45); text-decoration:none; transition:color 0.3s; opacity:0; animation:fadeUp 1s 1.0s ease forwards; }
+    .hero-trailer-btn { display:inline-flex; align-items:center; gap:10px; font-size:18px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:rgba(245,240,232,0.45); text-decoration:none; transition:color 0.3s; opacity:0; animation:fadeUp 1s 1.0s ease forwards; }
     .hero-trailer-btn:hover { color:var(--paper); }
     .hero-trailer-icon { width:28px; height:28px; border:1px solid rgba(245,240,232,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:border-color 0.3s; }
     .hero-trailer-btn:hover .hero-trailer-icon { border-color:rgba(245,240,232,0.7); }
@@ -80,15 +80,13 @@
     .hero-dots { display:flex; gap:8px; pointer-events:auto; }
     .hero-dot { width:24px; height:1px; background:rgba(245,240,232,0.3); cursor:pointer; transition:background 0.3s, width 0.3s; border:none; padding:0; }
     .hero-dot.active { width:40px; background:var(--paper); }
-    .hero-counter { font-size:11px; letter-spacing:0.2em; color:rgba(245,240,232,0.35); pointer-events:none; }
+    .hero-counter { font-size:14px; letter-spacing:0.2em; color:rgba(245,240,232,0.35); pointer-events:none; }
 
     /* ── Price section ── */
     .price-section {
       padding: 80px 40px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
       border-top: 1px solid rgba(245,240,232,0.06);
+      max-width: 560px;
     }
 
     .price-option {
@@ -101,14 +99,14 @@
     .price-option::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(245,240,232,0.02), transparent); }
     .price-option:hover { border-color: rgba(232,201,122,0.2); }
 
-    .price-label { font-size:11px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--dust); margin-bottom:20px; }
+    .price-label { font-size:16px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--dust); margin-bottom:20px; }
     .price-amount { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:300; color:var(--paper); line-height:1; margin-bottom:8px; }
-    .price-desc { font-size:13px; font-weight:300; color:var(--dust); line-height:1.8; margin-bottom:32px; }
+    .price-desc { font-size:18px; font-weight:300; color:var(--dust); line-height:1.8; margin-bottom:32px; }
     .price-btn {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      font-size: 12px;
+      font-size: 16px;
       font-weight: 500;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -116,8 +114,10 @@
       background: var(--paper);
       border: none;
       padding: 14px 28px;
-      cursor: none;
+      cursor: pointer;
       transition: background 0.3s, transform 0.2s;
+      position: relative;
+      z-index: 5;
     }
     .price-btn:hover { background: var(--accent); transform: translateX(4px); }
     .price-btn-outline { background:transparent; color:var(--paper); border:1px solid rgba(245,240,232,0.18); }
@@ -131,17 +131,147 @@
       gap: 80px;
       border-top: 1px solid rgba(245,240,232,0.06);
     }
-    .detail-label { font-size:11px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--accent); margin-bottom:28px; }
-    .detail-synopsis { font-size:17px; font-weight:300; line-height:2; color:var(--dust); }
+    .detail-label { font-size:16px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--accent); margin-bottom:28px; }
+    .detail-synopsis { font-size:18px; font-weight:300; line-height:2; color:var(--dust); }
     .detail-meta { display:flex; flex-direction:column; gap:0; }
     .detail-meta-item { padding:18px 0; border-bottom:1px solid rgba(245,240,232,0.06); }
-    .detail-meta-key { font-size:11px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:rgba(245,240,232,0.25); margin-bottom:6px; }
-    .detail-meta-val { font-size:15px; font-weight:400; color:var(--paper); }
+    .detail-meta-key { font-size:15px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:rgba(245,240,232,0.25); margin-bottom:6px; }
+    .detail-meta-val { font-size:20px; font-weight:400; color:var(--paper); }
+
+    /* ── Bonus materials ── */
+    .bonus-section { padding:80px 40px; border-top:1px solid rgba(245,240,232,0.06); }
+    .bonus-label { font-size:16px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--accent); margin-bottom:32px; }
+    .bonus-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+    .bonus-card {
+      border:1px solid rgba(245,240,232,0.08); padding:28px 24px;
+      cursor:pointer; transition:border-color 0.3s, background 0.3s;
+      position:relative; overflow:hidden;
+    }
+    .bonus-card:hover { border-color:rgba(232,201,122,0.25); background:rgba(245,240,232,0.02); }
+    .bonus-card-type {
+      font-size:14px; font-weight:500; letter-spacing:0.25em; text-transform:uppercase;
+      color:var(--dust); margin-bottom:12px; display:flex; align-items:center; gap:8px;
+    }
+    .bonus-card-type svg { width:14px; height:14px; fill:currentColor; }
+    .bonus-card-title { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:300; color:var(--paper); margin-bottom:8px; }
+    .bonus-card-desc { font-size:16px; font-weight:300; color:var(--dust); line-height:1.7; }
+
+    /* Bonus text viewer */
+    .bonus-text-viewer { display:none; padding:60px 40px; border-top:1px solid rgba(245,240,232,0.06); }
+    .bonus-text-viewer.open { display:block; }
+    .bonus-text-close { background:none; border:none; color:var(--dust); font-size:16px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; margin-bottom:24px; font-family:'Montserrat',sans-serif; transition:color 0.3s; }
+    .bonus-text-close:hover { color:var(--paper); }
+    .bonus-text-content { font-size:20px; font-weight:300; line-height:2; color:var(--dust); max-width:700px; }
 
     /* ── Footer ── */
     footer { border-top:1px solid rgba(245,240,232,0.06); padding:48px 40px; display:flex; justify-content:space-between; align-items:center; }
     .footer-logo { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300; letter-spacing:0.15em; color:rgba(245,240,232,0.3); }
-    .footer-copy { font-size:12px; letter-spacing:0.15em; color:rgba(245,240,232,0.2); }
+    .footer-copy { font-size:14px; letter-spacing:0.15em; color:rgba(245,240,232,0.2); }
+
+    /* ── Auth modal ── */
+    .auth-overlay { position:fixed; inset:0; z-index:200; background:rgba(8,8,8,0.85); display:none; align-items:center; justify-content:center; }
+    .auth-overlay.open { display:flex; }
+    .auth-modal { background:var(--ink); border:1px solid rgba(245,240,232,0.1); padding:56px 48px; max-width:440px; width:100%; position:relative; }
+    .auth-close { position:absolute; top:20px; right:20px; background:none; border:none; color:var(--dust); font-size:28px; cursor:pointer; padding:8px; }
+    .auth-title { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:300; color:var(--paper); margin-bottom:12px; }
+    .auth-desc { font-size:16px; color:var(--dust); margin-bottom:28px; line-height:1.7; }
+    .auth-input { width:100%; background:transparent; border:1px solid rgba(245,240,232,0.15); padding:18px 20px; color:var(--paper); font-family:'Montserrat',sans-serif; font-size:18px; letter-spacing:0.05em; outline:none; transition:border-color 0.3s; margin-bottom:16px; }
+    .auth-input:focus { border-color:var(--accent); }
+    .auth-input::placeholder { color:rgba(245,240,232,0.25); }
+    .auth-submit { width:100%; padding:18px; background:var(--paper); color:var(--ink); border:none; font-family:'Montserrat',sans-serif; font-size:16px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; transition:background 0.3s; }
+    .auth-submit:hover { background:var(--accent); }
+    .auth-submit:disabled { opacity:0.5; cursor:default; }
+    .auth-error { color:#e85a5a; font-size:14px; margin-bottom:12px; display:none; }
+    .auth-step { display:none; }
+    .auth-step.active { display:block; }
+
+    /* ── Toast notification ── */
+    .toast { position:fixed; bottom:40px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--paper); color:var(--ink); padding:20px 40px; font-size:18px; font-weight:500; letter-spacing:0.1em; z-index:300; opacity:0; transition:opacity 0.4s, transform 0.4s; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* ── Nav auth button ── */
+    .nav-auth-btn { font-size:16px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--dust); background:none; border:1px solid rgba(245,240,232,0.15); padding:8px 16px; cursor:pointer; transition:color 0.3s, border-color 0.3s; font-family:'Montserrat',sans-serif; }
+    .nav-auth-btn:hover { color:var(--paper); border-color:rgba(245,240,232,0.4); }
+    .nav-user-email { font-size:14px; letter-spacing:0.1em; color:var(--dust); }
+
+    /* ── Hero content/controls smooth hide ── */
+    .hero-content, .hero-controls { transition: opacity 0.4s ease; }
+
+    /* ── Inline hero video player ── */
+    .hero-player {
+      position:absolute; inset:0; z-index:101; background:#000;
+      opacity:0; visibility:hidden;
+      transition: opacity 0.6s ease, visibility 0.6s;
+    }
+    .hero-player.open { opacity:1; visibility:visible; }
+    .hero-player video { width:100%; height:100%; object-fit:contain; background:#000; cursor:pointer; }
+
+    .hero-player-close {
+      position:absolute; top:32px; right:40px; z-index:102;
+      background:rgba(0,0,0,0.5); border:1px solid rgba(245,240,232,0.2); color:var(--paper);
+      font-size:16px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase;
+      cursor:pointer; font-family:'Montserrat',sans-serif;
+      padding:12px 24px;
+      transition:color 0.3s, background 0.3s; opacity:0.85;
+    }
+    .hero-player-close:hover { color:var(--accent); opacity:1; background:rgba(0,0,0,0.7); border-color:var(--accent); }
+
+    /* ── Custom player controls ── */
+    .player-controls {
+      position:absolute; bottom:0; left:0; right:0; z-index:13;
+      padding:0 24px 24px;
+      background:linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+      display:flex; align-items:center; gap:14px;
+      opacity:0; transition:opacity 0.35s ease;
+      pointer-events:none;
+    }
+    .hero-player:hover .player-controls,
+    .hero-player.controls-visible .player-controls { opacity:1; pointer-events:auto; }
+
+    .ctrl-btn {
+      background:none; border:none; color:var(--paper); cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      width:32px; height:32px; padding:0; flex-shrink:0;
+      transition:color 0.2s;
+    }
+    .ctrl-btn:hover { color:var(--accent); }
+    .ctrl-btn svg { width:22px; height:22px; fill:currentColor; }
+
+    .ctrl-time, .ctrl-duration {
+      font-family:'Montserrat',sans-serif; font-size:15px;
+      letter-spacing:0.08em; color:rgba(245,240,232,0.6);
+      min-width:38px; flex-shrink:0; user-select:none;
+    }
+
+    .ctrl-progress {
+      flex:1; height:4px; background:rgba(245,240,232,0.15);
+      cursor:pointer; position:relative; border-radius:2px;
+      transition:height 0.15s ease;
+    }
+    .ctrl-progress:hover { height:6px; }
+    .ctrl-progress-filled {
+      height:100%; background:var(--accent); border-radius:2px;
+      position:relative; transition:width 0.1s linear;
+    }
+    .ctrl-progress-filled::after {
+      content:''; position:absolute; right:-5px; top:50%; transform:translateY(-50%);
+      width:10px; height:10px; background:var(--paper); border-radius:50%;
+      opacity:0; transition:opacity 0.15s;
+    }
+    .ctrl-progress:hover .ctrl-progress-filled::after { opacity:1; }
+
+    .ctrl-volume-wrap {
+      display:flex; align-items:center; gap:4px; flex-shrink:0;
+    }
+    .ctrl-volume {
+      -webkit-appearance:none; appearance:none;
+      width:60px; height:3px; background:rgba(245,240,232,0.2);
+      border-radius:2px; cursor:pointer; outline:none;
+    }
+    .ctrl-volume::-webkit-slider-thumb {
+      -webkit-appearance:none; width:10px; height:10px;
+      background:var(--paper); border-radius:50%; cursor:pointer;
+    }
 
     .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.9s ease, transform 0.9s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
@@ -179,6 +309,7 @@
         <div class="nav-back-arrow"></div>
         <span data-en="Back" data-ru="Назад">Back</span>
       </a>
+      <button class="nav-auth-btn" id="authBtn" onclick="openAuth()" data-en="Sign in" data-ru="Войти">Sign in</button>
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
         <span class="lang-sep">/</span>
@@ -187,8 +318,29 @@
     </div>
   </nav>
 
+  <!-- Auth modal -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-modal">
+      <button class="auth-close" onclick="closeAuth()">&times;</button>
+      <div class="auth-step active" id="authStepEmail">
+        <h3 class="auth-title" id="authTitle">Sign in</h3>
+        <p class="auth-desc" id="authDesc">Enter your email to receive a verification code.</p>
+        <p class="auth-error" id="authError"></p>
+        <input class="auth-input" id="authEmail" type="email" placeholder="email@example.com" />
+        <button class="auth-submit" id="authSendBtn" onclick="sendCode()">Send code</button>
+      </div>
+      <div class="auth-step" id="authStepCode">
+        <h3 class="auth-title" id="authCodeTitle">Enter code</h3>
+        <p class="auth-desc" id="authCodeDesc">We sent a 6-digit code to your email.</p>
+        <p class="auth-error" id="authCodeError"></p>
+        <input class="auth-input" id="authCode" type="text" placeholder="000000" maxlength="6" />
+        <button class="auth-submit" id="authVerifyBtn" onclick="verifyCode()">Verify</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Hero carousel -->
-  <section class="hero">
+  <section class="hero" id="heroSection">
     <div class="hero-slides" id="heroSlides"></div>
     <button class="hero-zone hero-zone-left"  id="heroPrev" aria-label="Previous"></button>
     <button class="hero-zone hero-zone-right" id="heroNext" aria-label="Next"></button>
@@ -197,13 +349,46 @@
       <span class="hero-counter" id="heroCounter">1 / 4</span>
       <div class="hero-dots" id="heroDots"></div>
     </div>
+    <!-- Inline player (inside hero) -->
+    <div class="hero-player" id="heroPlayer">
+      <button class="hero-player-close" onclick="closePlayer()" data-en="CLOSE" data-ru="ЗАКРЫТЬ">CLOSE</button>
+      <video id="playerVideo"></video>
+      <div class="player-controls" id="playerControls">
+        <button class="ctrl-btn" id="ctrlPlay" title="Play/Pause">
+          <svg id="ctrlPlayIcon" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        </button>
+        <span class="ctrl-time" id="ctrlTime">0:00</span>
+        <div class="ctrl-progress" id="ctrlProgress">
+          <div class="ctrl-progress-filled" id="ctrlFilled" style="width:0%"></div>
+        </div>
+        <span class="ctrl-duration" id="ctrlDuration">0:00</span>
+        <div class="ctrl-volume-wrap">
+          <button class="ctrl-btn" id="ctrlMute" title="Mute">
+            <svg id="ctrlMuteIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8.5v7a4.47 4.47 0 002.5-3.5zM14 3.23v2.06a7 7 0 010 13.42v2.06A9 9 0 0014 3.23z"/></svg>
+          </button>
+          <input class="ctrl-volume" id="ctrlVolume" type="range" min="0" max="1" step="0.05" value="1">
+        </div>
+        <button class="ctrl-btn" id="ctrlFullscreen" title="Fullscreen">
+          <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        </button>
+      </div>
+    </div>
   </section>
 
-  <!-- Price -->
+  <!-- Price (buy only) -->
   <section class="price-section" id="priceSection"></section>
 
-  <!-- Details -->
+  <!-- Details (metadata only, no synopsis) -->
   <section class="film-details" id="filmDetails"></section>
+
+  <!-- Bonus materials (visible only if purchased) -->
+  <section class="bonus-section" id="bonusSection" style="display:none"></section>
+  <div class="bonus-text-viewer" id="bonusTextViewer">
+    <button class="bonus-text-close" onclick="closeBonusText()" data-en="← BACK" data-ru="← НАЗАД">← BACK</button>
+    <div class="bonus-text-content" id="bonusTextContent"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 
   <footer>
     <span class="footer-logo">noúmenon</span>
@@ -228,7 +413,12 @@
           "url('/images/posters/the-lyrics-4.png') center/cover no-repeat"
         ],
         filmUrl: "", trailerUrl: "",
-        rentPrice: 3.99, buyPrice: 9.99
+        rentPrice: 3.99, buyPrice: 9.99,
+        bonus: [
+          { type: 'video', titleEn: 'Behind the Scenes', titleRu: 'Как снимался фильм', descEn: 'A look at the making of The Lyrics.', descRu: 'Взгляд на создание фильма «Стих».', src: '/api/video/the-lyrics/trailer' },
+          { type: 'text', titleEn: "Director's Statement", titleRu: 'Слово режиссёра', descEn: 'Armenak on the inspiration behind the film.', descRu: 'Арменак о вдохновении фильма.', contentEn: 'The Lyrics began as a feeling — a melody I could not get out of my head. I wanted to explore how love transforms through time, how it echoes across dimensions. Every frame is a verse, every cut a pause between breaths.', contentRu: '«Стих» начался как ощущение — мелодия, которая не выходила из головы. Я хотел исследовать, как любовь трансформируется во времени, как она отражается в разных измерениях. Каждый кадр — это строка, каждый монтажный переход — пауза между вдохами.' },
+          { type: 'file', titleEn: 'Original Screenplay', titleRu: 'Оригинальный сценарий', descEn: 'Download the screenplay (PDF).', descRu: 'Скачать сценарий (PDF).', fileUrl: '/files/the-lyrics-screenplay.pdf' }
+        ]
       },
       {
         slug: "the-drift",
@@ -247,7 +437,11 @@
         ],
         videoPreview: "/video/drift-trailer.mp4",
         filmUrl: "", trailerUrl: "",
-        rentPrice: 3.99, buyPrice: 9.99
+        rentPrice: 3.99, buyPrice: 9.99,
+        bonus: [
+          { type: 'video', titleEn: 'Trailer Breakdown', titleRu: 'Разбор трейлера', descEn: 'Frame-by-frame analysis of the trailer.', descRu: 'Покадровый анализ трейлера.', src: '/api/video/the-drift/trailer' },
+          { type: 'text', titleEn: "Director's Notes", titleRu: 'Заметки режиссёра', descEn: 'Personal notes from the journey.', descRu: 'Личные заметки из путешествия.', contentEn: 'We spent three weeks driving through Iran, following a route that no longer exists on any map. The landscape became a character — vast, indifferent, beautiful. Every person we met carried a story larger than our film.', contentRu: 'Мы провели три недели в пути по Ирану, следуя маршруту, которого нет ни на одной карте. Пейзаж стал персонажем — огромным, безразличным, прекрасным. Каждый встреченный человек нёс историю больше нашего фильма.' }
+        ]
       }
     ];
 
@@ -377,15 +571,13 @@
 
       document.title = `${title} — noúmenon`;
 
-      const trailerBtn = film.trailerUrl
-        ? `<a href="${film.trailerUrl}" target="_blank" class="hero-trailer-btn">
+      const trailerBtn = `<a href="#" class="hero-trailer-btn" onclick="openPlayer('/api/video/${film.slug}/trailer'); return false;">
              <div class="hero-trailer-icon"><svg viewBox="0 0 8 9"><polygon points="0,0 8,4.5 0,9"/></svg></div>
              <span>${trailerLabel}</span>
-           </a>`
-        : '';
+           </a>`;
 
-      const watchBtn = film.filmUrl
-        ? `<a href="${film.filmUrl}" target="_blank" class="hero-film-link">
+      const watchBtn = (userAccess && userAccess.hasAccess)
+        ? `<a href="#" class="hero-film-link" onclick="openPlayer('/api/video/${film.slug}/film'); return false;">
              <span>${watchLabel}</span>
              <div class="hero-film-link-line"></div>
            </a>`
@@ -475,42 +667,36 @@
     function renderBelow() {
       const f    = film;
       const isRu = currentLang === 'ru';
+      const hasPurchased = userAccess && userAccess.hasAccess;
 
-      const rentLabel    = isRu ? 'Аренда'    : 'Rent';
-      const buyLabel     = isRu ? 'Купить'    : 'Buy';
-      const rentDesc     = isRu ? '48-часовой доступ к фильму.' : '48-hour streaming access.';
-      const buyDesc      = isRu ? 'Постоянный доступ в вашей библиотеке.' : 'Permanent access in your library.';
-      const rentCta      = isRu ? 'Арендовать' : 'Rent Now';
-      const buyCta       = isRu ? 'Купить'    : 'Buy Now';
-      const synopsisLbl  = isRu ? 'Синопсис'  : 'Synopsis';
-      const directorLbl  = isRu ? 'Режиссёр'  : 'Director';
-      const yearLbl      = isRu ? 'Год'        : 'Year';
+      const buyLabel     = isRu ? 'Купить' : 'Buy';
+      const buyDesc      = isRu ? 'Постоянный доступ к фильму и доп. материалам.' : 'Permanent access to the film and bonus materials.';
+      const buyCta       = isRu ? 'Купить' : 'Buy Now';
+      const directorLbl  = isRu ? 'Режиссёр' : 'Director';
+      const yearLbl      = isRu ? 'Год' : 'Year';
       const durationLbl  = isRu ? 'Хронометраж' : 'Runtime';
       const durationVal  = isRu ? `${f.duration} мин` : `${f.duration} min`;
-      const genreLbl     = isRu ? 'Жанр'      : 'Genre';
-      const synopsis     = isRu ? f.synopsisRu : f.synopsisEn;
-      const genre        = isRu ? f.genreRu   : f.genreEn;
+      const genreLbl     = isRu ? 'Жанр' : 'Genre';
+      const genre        = isRu ? f.genreRu : f.genreEn;
 
-      document.getElementById('priceSection').innerHTML = `
-        <div class="price-option reveal">
-          <p class="price-label">${rentLabel}</p>
-          <p class="price-amount">$${f.rentPrice.toFixed(2)}</p>
-          <p class="price-desc">${rentDesc}</p>
-          <button class="price-btn" onclick="handlePurchase('rent')">${rentCta}</button>
-        </div>
-        <div class="price-option reveal">
-          <p class="price-label">${buyLabel}</p>
-          <p class="price-amount">$${f.buyPrice.toFixed(2)}</p>
-          <p class="price-desc">${buyDesc}</p>
-          <button class="price-btn price-btn-outline" onclick="handlePurchase('buy')">${buyCta}</button>
-        </div>`;
+      // Price section — only buy, hidden if purchased
+      const priceEl = document.getElementById('priceSection');
+      if (hasPurchased) {
+        priceEl.style.display = 'none';
+      } else {
+        priceEl.style.display = '';
+        priceEl.innerHTML = `
+          <div class="price-option reveal">
+            <p class="price-label">${buyLabel}</p>
+            <p class="price-amount">$${f.buyPrice.toFixed(2)}</p>
+            <p class="price-desc">${buyDesc}</p>
+            <button class="price-btn" onclick="handlePurchase('buy')">${buyCta}</button>
+          </div>`;
+      }
 
+      // Details — metadata only, no synopsis
       document.getElementById('filmDetails').innerHTML = `
-        <div>
-          <p class="detail-label reveal">${synopsisLbl}</p>
-          <p class="detail-synopsis reveal">${synopsis}</p>
-        </div>
-        <div class="detail-meta">
+        <div class="detail-meta" style="grid-column:1/-1">
           <div class="detail-meta-item reveal">
             <p class="detail-meta-key">${directorLbl}</p>
             <p class="detail-meta-val">Armenak</p>
@@ -529,17 +715,361 @@
           </div>
         </div>`;
 
+      // Bonus materials — only if purchased
+      renderBonus();
+
       document.getElementById('footerCopy').textContent =
         isRu ? '© 2025 noúmenon. Все права защищены.' : '© 2025 noúmenon. All rights reserved.';
 
       observeReveal();
     }
 
-    function handlePurchase(type) {
-      const msg = currentLang === 'ru'
-        ? 'Платёжная интеграция (Stripe) будет подключена.'
-        : 'Payment integration (Stripe) coming soon.';
-      alert(msg);
+    // ── Bonus materials ──
+    const typeIcons = {
+      video: '<svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>',
+      text:  '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>',
+      file:  '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11zm-3-7v4h-2v-4H9l4-4 4 4h-2z"/></svg>'
+    };
+    const typeLabels = {
+      video: { en: 'VIDEO', ru: 'ВИДЕО' },
+      text:  { en: 'TEXT', ru: 'ТЕКСТ' },
+      file:  { en: 'FILE', ru: 'ФАЙЛ' }
+    };
+
+    function renderBonus() {
+      const hasPurchased = userAccess && userAccess.hasAccess;
+      const bonusEl = document.getElementById('bonusSection');
+      if (!hasPurchased || !film.bonus || film.bonus.length === 0) {
+        bonusEl.style.display = 'none';
+        return;
+      }
+      const isRu = currentLang === 'ru';
+      const label = isRu ? 'ДОП. МАТЕРИАЛЫ' : 'BONUS MATERIALS';
+
+      bonusEl.style.display = '';
+      bonusEl.innerHTML = `
+        <p class="bonus-label reveal">${label}</p>
+        <div class="bonus-grid">
+          ${film.bonus.map((b, i) => `
+            <div class="bonus-card reveal" onclick="openBonus(${i})">
+              <p class="bonus-card-type">${typeIcons[b.type]} ${typeLabels[b.type][isRu ? 'ru' : 'en']}</p>
+              <p class="bonus-card-title">${isRu ? b.titleRu : b.titleEn}</p>
+              <p class="bonus-card-desc">${isRu ? b.descRu : b.descEn}</p>
+            </div>`).join('')}
+        </div>`;
+    }
+
+    function openBonus(idx) {
+      const b = film.bonus[idx];
+      const isRu = currentLang === 'ru';
+      if (b.type === 'video') {
+        openPlayer(b.src);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (b.type === 'text') {
+        const viewer = document.getElementById('bonusTextViewer');
+        document.getElementById('bonusTextContent').innerHTML =
+          `<h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--paper);margin-bottom:24px">${isRu ? b.titleRu : b.titleEn}</h3>
+           <p>${isRu ? b.contentRu : b.contentEn}</p>`;
+        viewer.classList.add('open');
+        viewer.scrollIntoView({ behavior: 'smooth' });
+      } else if (b.type === 'file') {
+        window.open(b.fileUrl, '_blank');
+      }
+    }
+
+    function closeBonusText() {
+      document.getElementById('bonusTextViewer').classList.remove('open');
+    }
+
+    // ── Auth state ──
+    let currentUser = null;
+    let userAccess = null;
+
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+        currentUser = data.user;
+        updateAuthUI();
+        if (currentUser) await checkAccess();
+      } catch {}
+    }
+
+    async function checkAccess() {
+      if (!currentUser) return;
+      try {
+        const res = await fetch(`/api/purchase/access/${film.slug}`);
+        if (res.ok) {
+          userAccess = await res.json();
+          updateHeroContent(false);
+          updateAccessUI();
+        }
+      } catch {}
+    }
+
+    function updateAuthUI() {
+      const btn = document.getElementById('authBtn');
+      if (currentUser) {
+        btn.textContent = currentUser.email;
+        btn.classList.add('nav-user-email');
+        btn.onclick = showUserMenu;
+      } else {
+        const isRu = currentLang === 'ru';
+        btn.textContent = isRu ? 'Войти' : 'Sign in';
+        btn.classList.remove('nav-user-email');
+        btn.onclick = openAuth;
+      }
+    }
+
+    function updateAccessUI() {
+      if (!userAccess || !userAccess.hasAccess) return;
+      // Show "Watch" button in hero instead of trailer
+      const btns = document.querySelector('.hero-btns');
+      if (btns) {
+        const isRu = currentLang === 'ru';
+        const label = isRu ? 'Смотреть фильм' : 'Watch film';
+        btns.innerHTML = `
+          <a href="#" class="hero-film-link" onclick="openPlayer('/api/video/${film.slug}/film'); return false;">
+            <span>${label}</span>
+            <div class="hero-film-link-line"></div>
+          </a>`;
+      }
+    }
+
+    // ── Auth modal ──
+    function openAuth() {
+      if (currentUser) return;
+      const isRu = currentLang === 'ru';
+      document.getElementById('authTitle').textContent = isRu ? 'Войти' : 'Sign in';
+      document.getElementById('authDesc').textContent = isRu
+        ? 'Введите email для получения кода подтверждения.'
+        : 'Enter your email to receive a verification code.';
+      document.getElementById('authSendBtn').textContent = isRu ? 'Отправить код' : 'Send code';
+      document.getElementById('authCodeTitle').textContent = isRu ? 'Введите код' : 'Enter code';
+      document.getElementById('authCodeDesc').textContent = isRu
+        ? 'Мы отправили 6-значный код на ваш email.'
+        : 'We sent a 6-digit code to your email.';
+      document.getElementById('authVerifyBtn').textContent = isRu ? 'Подтвердить' : 'Verify';
+
+      document.getElementById('authStepEmail').classList.add('active');
+      document.getElementById('authStepCode').classList.remove('active');
+      document.getElementById('authError').style.display = 'none';
+      document.getElementById('authCodeError').style.display = 'none';
+      document.getElementById('authEmail').value = '';
+      document.getElementById('authCode').value = '';
+      document.getElementById('authOverlay').classList.add('open');
+    }
+
+    function closeAuth() {
+      document.getElementById('authOverlay').classList.remove('open');
+    }
+
+    async function sendCode() {
+      const email = document.getElementById('authEmail').value.trim();
+      if (!email) return;
+      const btn = document.getElementById('authSendBtn');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/auth/send-code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        if (!res.ok) throw new Error('Failed');
+        document.getElementById('authStepEmail').classList.remove('active');
+        document.getElementById('authStepCode').classList.add('active');
+      } catch {
+        const err = document.getElementById('authError');
+        err.textContent = currentLang === 'ru' ? 'Ошибка отправки кода' : 'Failed to send code';
+        err.style.display = 'block';
+      }
+      btn.disabled = false;
+    }
+
+    async function verifyCode() {
+      const email = document.getElementById('authEmail').value.trim();
+      const code = document.getElementById('authCode').value.trim();
+      if (!code) return;
+      const btn = document.getElementById('authVerifyBtn');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/auth/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code })
+        });
+        if (!res.ok) throw new Error('Invalid code');
+        const data = await res.json();
+        currentUser = data.user;
+        closeAuth();
+        updateAuthUI();
+        await checkAccess();
+        if (pendingPurchaseType) {
+          await handlePurchase(pendingPurchaseType);
+          pendingPurchaseType = null;
+        }
+      } catch {
+        const err = document.getElementById('authCodeError');
+        err.textContent = currentLang === 'ru' ? 'Неверный или просроченный код' : 'Invalid or expired code';
+        err.style.display = 'block';
+      }
+      btn.disabled = false;
+    }
+
+    function showUserMenu() {
+      if (confirm(currentLang === 'ru' ? 'Выйти из аккаунта?' : 'Sign out?')) {
+        fetch('/api/auth/logout', { method: 'POST' });
+        currentUser = null;
+        userAccess = null;
+        updateAuthUI();
+        renderBelow();
+      }
+    }
+
+    // ── Video player (inline in hero) ──
+    const _player = document.getElementById('heroPlayer');
+    const _video  = document.getElementById('playerVideo');
+    const _filled = document.getElementById('ctrlFilled');
+    const _time   = document.getElementById('ctrlTime');
+    const _dur    = document.getElementById('ctrlDuration');
+    const _playIcon = document.getElementById('ctrlPlayIcon');
+    const _muteIcon = document.getElementById('ctrlMuteIcon');
+    let _hideTimer = null;
+
+    function fmt(s) {
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+
+    function openPlayer(src) {
+      _video.src = src;
+      _player.classList.add('open');
+      _player.classList.add('controls-visible');
+      document.getElementById('heroContent').style.opacity = '0';
+      document.getElementById('heroContent').style.pointerEvents = 'none';
+      document.querySelector('.hero-controls').style.opacity = '0';
+      document.getElementById('heroPrev').style.display = 'none';
+      document.getElementById('heroNext').style.display = 'none';
+      _video.play();
+      resetHideTimer();
+    }
+
+    function closePlayer() {
+      _video.pause();
+      _video.src = '';
+      _player.classList.remove('open');
+      _player.classList.remove('controls-visible');
+      document.getElementById('heroContent').style.opacity = '';
+      document.getElementById('heroContent').style.pointerEvents = '';
+      document.querySelector('.hero-controls').style.opacity = '';
+      document.getElementById('heroPrev').style.display = '';
+      document.getElementById('heroNext').style.display = '';
+      clearTimeout(_hideTimer);
+    }
+
+    // Play/Pause
+    document.getElementById('ctrlPlay').addEventListener('click', togglePlay);
+    _video.addEventListener('click', togglePlay);
+    function togglePlay() {
+      if (_video.paused) { _video.play(); } else { _video.pause(); }
+    }
+    _video.addEventListener('play', () => {
+      _playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+    });
+    _video.addEventListener('pause', () => {
+      _playIcon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+    });
+
+    // Progress
+    _video.addEventListener('timeupdate', () => {
+      if (!_video.duration) return;
+      const pct = (_video.currentTime / _video.duration) * 100;
+      _filled.style.width = pct + '%';
+      _time.textContent = fmt(_video.currentTime);
+    });
+    _video.addEventListener('loadedmetadata', () => {
+      _dur.textContent = fmt(_video.duration);
+    });
+    document.getElementById('ctrlProgress').addEventListener('click', (e) => {
+      const bar = e.currentTarget;
+      const pct = e.offsetX / bar.offsetWidth;
+      _video.currentTime = pct * _video.duration;
+    });
+
+    // Volume
+    const _volInput = document.getElementById('ctrlVolume');
+    _volInput.addEventListener('input', () => {
+      _video.volume = parseFloat(_volInput.value);
+      _video.muted = false;
+      updateMuteIcon();
+    });
+    document.getElementById('ctrlMute').addEventListener('click', () => {
+      _video.muted = !_video.muted;
+      if (_video.muted) _volInput.value = '0';
+      else _volInput.value = String(_video.volume);
+      updateMuteIcon();
+    });
+    function updateMuteIcon() {
+      if (_video.muted || _video.volume === 0) {
+        _muteIcon.innerHTML = '<path d="M16.5 12A4.5 4.5 0 0014 8.5v2.09l2.41 2.41c.06-.31.09-.65.09-1zM19 12a7 7 0 00-.56-2.77L16.9 10.8A4.87 4.87 0 0117 12c0 1.48-.65 2.8-1.68 3.7l1.43 1.43A6.96 6.96 0 0019 12zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a9 9 0 003.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4l-2.11 2.11L12 8.23V4z"/>';
+      } else {
+        _muteIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8.5v7a4.47 4.47 0 002.5-3.5zM14 3.23v2.06a7 7 0 010 13.42v2.06A9 9 0 0014 3.23z"/>';
+      }
+    }
+
+    // Fullscreen
+    document.getElementById('ctrlFullscreen').addEventListener('click', () => {
+      const el = document.getElementById('heroSection');
+      if (document.fullscreenElement) document.exitFullscreen();
+      else el.requestFullscreen();
+    });
+
+    // Auto-hide controls
+    function resetHideTimer() {
+      _player.classList.add('controls-visible');
+      clearTimeout(_hideTimer);
+      _hideTimer = setTimeout(() => {
+        if (!_video.paused) _player.classList.remove('controls-visible');
+      }, 3000);
+    }
+    _player.addEventListener('mousemove', resetHideTimer);
+    _video.addEventListener('pause', () => {
+      _player.classList.add('controls-visible');
+      clearTimeout(_hideTimer);
+    });
+
+    // ── Purchase ──
+    let pendingPurchaseType = null;
+
+    async function handlePurchase(type) {
+      if (!currentUser) {
+        pendingPurchaseType = type;
+        openAuth();
+        return;
+      }
+      try {
+        const res = await fetch('/api/purchase', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filmSlug: film.slug, type })
+        });
+        if (!res.ok) throw new Error('Failed');
+        await checkAccess();
+        const isRu = currentLang === 'ru';
+        showToast(isRu ? 'Фильм доступен!' : 'Film unlocked!');
+        updateHeroContent(false);
+        renderBelow();
+      } catch {
+        showToast(currentLang === 'ru' ? 'Ошибка покупки' : 'Purchase failed');
+      }
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
     }
 
     function observeReveal() {
@@ -588,10 +1118,14 @@
 
     // Init
     initHeroSlides();
-    updateHeroContent(false);
     updateDots();
     renderBelow();
-    setLang(currentLang);
+    // First check auth, then render hero (so Watch button shows if purchased)
+    checkAuth().then(() => {
+      setLang(currentLang);
+      updateHeroContent(false);
+      updateAuthUI();
+    });
   </script>
 </body>
 </html>

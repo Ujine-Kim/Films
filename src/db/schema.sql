@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS magic_codes (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  code VARCHAR(6) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  used BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS purchases (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  film_slug VARCHAR(100) NOT NULL,
+  type VARCHAR(10) CHECK (type IN ('rent', 'buy')),
+  expires_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT NOW()
+);

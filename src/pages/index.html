@@ -107,7 +107,7 @@
 
     .nav-link {
       font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -116,6 +116,27 @@
       transition: color 0.3s;
     }
     .nav-link:hover { color: var(--paper); }
+
+    /* Auth button + modal */
+    .nav-auth-btn { font-size:16px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--dust); background:none; border:1px solid rgba(245,240,232,0.15); padding:8px 16px; cursor:pointer; transition:color 0.3s, border-color 0.3s; font-family:'Montserrat',sans-serif; }
+    .nav-auth-btn:hover { color:var(--paper); border-color:rgba(245,240,232,0.4); }
+    .nav-user-email { font-size:13px; letter-spacing:0.1em; color:var(--dust); border:none; }
+
+    .auth-overlay { position:fixed; inset:0; z-index:200; background:rgba(8,8,8,0.85); display:none; align-items:center; justify-content:center; }
+    .auth-overlay.open { display:flex; }
+    .auth-modal { background:var(--ink); border:1px solid rgba(245,240,232,0.1); padding:56px 48px; max-width:440px; width:100%; position:relative; }
+    .auth-close { position:absolute; top:20px; right:20px; background:none; border:none; color:var(--dust); font-size:28px; cursor:pointer; padding:8px; }
+    .auth-title { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:300; color:var(--paper); margin-bottom:12px; }
+    .auth-desc { font-size:16px; color:var(--dust); margin-bottom:28px; line-height:1.7; }
+    .auth-input { width:100%; background:transparent; border:1px solid rgba(245,240,232,0.15); padding:18px 20px; color:var(--paper); font-family:'Montserrat',sans-serif; font-size:18px; letter-spacing:0.05em; outline:none; transition:border-color 0.3s; margin-bottom:16px; }
+    .auth-input:focus { border-color:var(--accent); }
+    .auth-input::placeholder { color:rgba(245,240,232,0.25); }
+    .auth-submit { width:100%; padding:18px; background:var(--paper); color:var(--ink); border:none; font-family:'Montserrat',sans-serif; font-size:16px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; transition:background 0.3s; }
+    .auth-submit:hover { background:var(--accent); }
+    .auth-submit:disabled { opacity:0.5; cursor:default; }
+    .auth-error { color:#e85a5a; font-size:12px; margin-bottom:12px; display:none; }
+    .auth-step { display:none; }
+    .auth-step.active { display:block; }
 
     /* Language toggle */
     .lang-toggle {
@@ -132,7 +153,7 @@
       color: var(--dust);
       cursor: pointer;
       font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 500;
       letter-spacing: 0.15em;
       transition: color 0.3s;
@@ -203,7 +224,7 @@
     }
 
     .hero-film-label {
-      font-size: 13px;
+      font-size: 18px;
       font-weight: 500;
       letter-spacing: 0.3em;
       text-transform: uppercase;
@@ -229,7 +250,7 @@
     }
 
     .hero-film-desc {
-      font-size: 16px;
+      font-size: 22px;
       font-weight: 300;
       letter-spacing: 0.08em;
       color: var(--dust);
@@ -251,7 +272,7 @@
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 500;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -277,7 +298,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 500;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -467,7 +488,7 @@
     }
 
     .film-card-meta {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 500;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -485,7 +506,7 @@
     }
 
     .film-card-tagline {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 300;
       letter-spacing: 0.05em;
       color: var(--dust);
@@ -506,7 +527,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -728,6 +749,7 @@
     </a>
     <div class="nav-right">
       <a href="#films" class="nav-link" data-en="FILMS" data-ru="ФИЛЬМЫ">FILMS</a>
+      <button class="nav-auth-btn" id="authBtn" onclick="openAuth()" data-en="Sign in" data-ru="Войти">Sign in</button>
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
         <span class="lang-sep">/</span>
@@ -735,6 +757,27 @@
       </div>
     </div>
   </nav>
+
+  <!-- Auth modal -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-modal">
+      <button class="auth-close" onclick="closeAuth()">&times;</button>
+      <div class="auth-step active" id="authStepEmail">
+        <h3 class="auth-title" id="authTitle">Sign in</h3>
+        <p class="auth-desc" id="authDesc">Enter your email to receive a verification code.</p>
+        <p class="auth-error" id="authError"></p>
+        <input class="auth-input" id="authEmail" type="email" placeholder="email@example.com" />
+        <button class="auth-submit" id="authSendBtn" onclick="sendCode()">Send code</button>
+      </div>
+      <div class="auth-step" id="authStepCode">
+        <h3 class="auth-title" id="authCodeTitle">Enter code</h3>
+        <p class="auth-desc" id="authCodeDesc">We sent a 6-digit code to your email.</p>
+        <p class="auth-error" id="authCodeError"></p>
+        <input class="auth-input" id="authCode" type="text" placeholder="000000" maxlength="6" />
+        <button class="auth-submit" id="authVerifyBtn" onclick="verifyCode()">Verify</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Hero Carousel -->
   <section class="hero" id="heroSection">
@@ -1037,12 +1080,120 @@
       els.forEach(el => obs.observe(el));
     }
 
+    // ── Auth ──
+    let currentUser = null;
+
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+        currentUser = data.user;
+        updateAuthUI();
+      } catch {}
+    }
+
+    function updateAuthUI() {
+      const btn = document.getElementById('authBtn');
+      if (currentUser) {
+        btn.textContent = currentUser.email;
+        btn.classList.add('nav-user-email');
+        btn.onclick = showUserMenu;
+      } else {
+        const isRu = currentLang === 'ru';
+        btn.textContent = isRu ? 'Войти' : 'Sign in';
+        btn.classList.remove('nav-user-email');
+        btn.onclick = openAuth;
+      }
+    }
+
+    function openAuth() {
+      if (currentUser) return;
+      const isRu = currentLang === 'ru';
+      document.getElementById('authTitle').textContent = isRu ? 'Войти' : 'Sign in';
+      document.getElementById('authDesc').textContent = isRu
+        ? 'Введите email для получения кода подтверждения.'
+        : 'Enter your email to receive a verification code.';
+      document.getElementById('authSendBtn').textContent = isRu ? 'Отправить код' : 'Send code';
+      document.getElementById('authCodeTitle').textContent = isRu ? 'Введите код' : 'Enter code';
+      document.getElementById('authCodeDesc').textContent = isRu
+        ? 'Мы отправили 6-значный код на ваш email.'
+        : 'We sent a 6-digit code to your email.';
+      document.getElementById('authVerifyBtn').textContent = isRu ? 'Подтвердить' : 'Verify';
+      document.getElementById('authStepEmail').classList.add('active');
+      document.getElementById('authStepCode').classList.remove('active');
+      document.getElementById('authError').style.display = 'none';
+      document.getElementById('authCodeError').style.display = 'none';
+      document.getElementById('authEmail').value = '';
+      document.getElementById('authCode').value = '';
+      document.getElementById('authOverlay').classList.add('open');
+    }
+
+    function closeAuth() {
+      document.getElementById('authOverlay').classList.remove('open');
+    }
+
+    async function sendCode() {
+      const email = document.getElementById('authEmail').value.trim();
+      if (!email) return;
+      const btn = document.getElementById('authSendBtn');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/auth/send-code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        if (!res.ok) throw new Error();
+        document.getElementById('authStepEmail').classList.remove('active');
+        document.getElementById('authStepCode').classList.add('active');
+      } catch {
+        const err = document.getElementById('authError');
+        err.textContent = currentLang === 'ru' ? 'Ошибка отправки кода' : 'Failed to send code';
+        err.style.display = 'block';
+      }
+      btn.disabled = false;
+    }
+
+    async function verifyCode() {
+      const email = document.getElementById('authEmail').value.trim();
+      const code = document.getElementById('authCode').value.trim();
+      if (!code) return;
+      const btn = document.getElementById('authVerifyBtn');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/auth/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code })
+        });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        currentUser = data.user;
+        closeAuth();
+        updateAuthUI();
+      } catch {
+        const err = document.getElementById('authCodeError');
+        err.textContent = currentLang === 'ru' ? 'Неверный или просроченный код' : 'Invalid or expired code';
+        err.style.display = 'block';
+      }
+      btn.disabled = false;
+    }
+
+    function showUserMenu() {
+      if (confirm(currentLang === 'ru' ? 'Выйти из аккаунта?' : 'Sign out?')) {
+        fetch('/api/auth/logout', { method: 'POST' });
+        currentUser = null;
+        updateAuthUI();
+      }
+    }
+
     // Init
     initHeroSlides();
     renderHero();
     renderFilms();
     observeReveal();
     setLang(currentLang);
+    checkAuth();
   </script>
 </body>
 </html>
