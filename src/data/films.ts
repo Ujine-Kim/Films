@@ -39,8 +39,8 @@ export const films: Film[] = [
     awards: [],
     rentPrice: 3.99,
     buyPrice: 9.99,
-    trailerFile: "the-lyrics-trailer.mov",
-    filmFile: "the-lyrics-full.mov"
+    trailerFile: "the-lyrics-trailer.mp4",
+    filmFile: "the-lyrics-full.mp4"
   },
   {
     id: "2",
@@ -60,8 +60,8 @@ export const films: Film[] = [
     awards: [],
     rentPrice: 3.99,
     buyPrice: 9.99,
-    trailerFile: "the-drift-trailer.mov",
-    filmFile: "the-drift-full.mov"
+    trailerFile: "the-drift-trailer.mp4",
+    filmFile: "the-drift-full.mp4"
   }
 ];
 
