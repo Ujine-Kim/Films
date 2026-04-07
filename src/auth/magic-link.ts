@@ -22,12 +22,12 @@ export async function sendMagicCode(email: string): Promise<string> {
   const r = getResend();
   if (r) {
     await r.emails.send({
-      from: 'Armenak Films <noreply@phenomenonfilms.art>',
+      from: 'Phenomenon Films <noreply@phenomenonfilms.art>',
       to: email,
       subject: `Your login code: ${code}`,
       html: `
         <div style="font-family: Georgia, serif; max-width: 400px; margin: 0 auto; padding: 40px 20px; color: #1a1a1a;">
-          <h2 style="font-weight: normal; margin-bottom: 8px;">Armenak Films</h2>
+          <h2 style="font-weight: normal; margin-bottom: 8px;">Phenomenon Films</h2>
           <p style="color: #666; margin-bottom: 32px;">Your verification code:</p>
           <div style="font-size: 32px; letter-spacing: 8px; font-weight: bold; text-align: center; padding: 20px; background: #f5f5f0; border-radius: 8px;">
             ${code}
