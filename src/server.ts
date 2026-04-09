@@ -22,6 +22,10 @@ app.get('/', (_req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, 'pages', 'index.html'));
 });
 
+app.get('/privacy', (_req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, 'pages', 'privacy.html'));
+});
+
 app.get('/film/:slug', (req: Request, res: Response) => {
   const film = films.find(f => f.slug === req.params.slug);
   if (!film) return res.status(404).send('Film not found');
