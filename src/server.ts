@@ -53,7 +53,12 @@ app.get('/api/director', (_req: Request, res: Response) => {
 
 // Start
 async function start() {
-  await initDB();
+  try {
+    await initDB();
+  } catch (err) {
+    console.warn('DB not available — auth/purchases will fail. Continuing anyway.');
+    console.warn(err instanceof Error ? err.message : err);
+  }
   app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
   });
