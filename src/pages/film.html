@@ -354,6 +354,12 @@
       /* Detail meta */
       .detail-meta-key { font-size:13px; }
       .detail-meta-val { font-size:17px; }
+
+      /* Slimmer carousel dots & counter */
+      .hero-controls { bottom:24px; right:24px; gap:12px; }
+      .hero-dot { width:18px; }
+      .hero-dot.active { width:28px; }
+      .hero-counter { font-size:10px; letter-spacing:0.18em; opacity:0.6; }
     }
 
     @media (max-width:480px) {
@@ -370,7 +376,7 @@
       .hero-player-close, .auth-close { cursor:pointer; }
 
       /* Bigger hero dots tap area */
-      .hero-dot { padding:14px 0; box-sizing:content-box; }
+      .hero-dot { padding:14px 0; box-sizing:content-box; background-clip:content-box; }
 
       /* Always show player controls (no hover) */
       .hero-player .player-controls { opacity:1; pointer-events:auto; }
