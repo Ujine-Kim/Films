@@ -1,6 +1,8 @@
-# Armenak — Filmmaker Website
+# Phenomenon Films — Filmmaker Website
 
 A cinematic portfolio & film sales site. Dark, editorial aesthetic inspired by siena.film.
+
+🌐 Live: [phenomenonfilms.art](https://phenomenonfilms.art)
 
 ## Stack
 - **TypeScript** + **Node.js** (Express)
