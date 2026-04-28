@@ -142,6 +142,77 @@
     .auth-step { display:none; }
     .auth-step.active { display:block; }
 
+    /* Mobile hamburger button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      width: 44px; height: 44px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+    .mobile-menu-btn span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--paper);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .mobile-menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .mobile-menu-btn.open span:nth-child(2) { opacity: 0; }
+    .mobile-menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile drawer */
+    .mobile-drawer {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 100%;
+      max-width: 360px;
+      background: var(--ink);
+      z-index: 150;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 100px 40px 40px;
+      gap: 32px;
+      border-left: 1px solid rgba(245,240,232,0.08);
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,8,8,0.7);
+      z-index: 140;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s;
+    }
+    .mobile-drawer-backdrop.open { opacity: 1; visibility: visible; }
+    .mobile-drawer a, .mobile-drawer button {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--paper);
+      text-decoration: none;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 0;
+      cursor: pointer;
+    }
+    .mobile-drawer-section { padding-bottom: 24px; border-bottom: 1px solid rgba(245,240,232,0.08); }
+    .mobile-drawer-section:last-child { border-bottom: none; }
+    .mobile-drawer-lang { display: flex; gap: 16px; align-items: center; }
+    .mobile-drawer-lang button { font-size: 16px; color: var(--dust); }
+    .mobile-drawer-lang button.active { color: var(--paper); }
+
     /* Language toggle */
     .lang-toggle {
       display: flex;
@@ -621,9 +692,57 @@
 
     @media (max-width: 768px) {
       .about-section { grid-template-columns: 1fr; gap: 48px; padding: 100px 24px; }
-      .films-grid { grid-template-columns: 1fr; }
+      .films-grid { grid-template-columns: 1fr; gap: 12px; }
       nav { padding: 20px 24px; }
       .hero-content { padding: 0 24px 60px; }
+
+      /* Hide desktop nav items, show hamburger */
+      .nav-link, .nav-auth-btn, .nav-right > .lang-toggle { display: none; }
+      .mobile-menu-btn { display: flex; }
+
+      /* Auth modal full-width */
+      .auth-modal { padding: 40px 24px; max-width: calc(100vw - 32px); }
+      .auth-title { font-size: 28px; }
+
+      /* Hero adaptations */
+      .hero-film-label { font-size: 13px; letter-spacing: 0.25em; }
+      .hero-film-desc { font-size: 16px; line-height: 1.7; }
+      .hero-film-link, .hero-trailer-btn { font-size: 14px; }
+      .hero-counter { font-size: 12px; }
+
+      /* Film cards: bigger touch padding */
+      .film-card { aspect-ratio: 3/4; }
+      .film-card-content { padding: 24px 20px; }
+      .film-card-title { font-size: 32px; }
+      .film-card-meta { font-size: 13px; }
+      .film-card-tagline { font-size: 14px; }
+
+      /* About */
+      .about-bio { font-size: 15px; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-logo { font-size: 32px; }
+      .film-card-title { font-size: 28px; }
+      .hero-film-desc { font-size: 15px; }
+    }
+
+    /* Touch device fixes — no hover */
+    @media (hover: none) and (pointer: coarse) {
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none !important; }
+      .nav-link, .nav-auth-btn, .lang-btn, .film-card,
+      .hero-zone, .hero-dot, .auth-submit, .mobile-menu-btn {
+        cursor: pointer;
+      }
+
+      /* Film card tagline always visible */
+      .film-card-tagline { max-height: 80px; opacity: 1; }
+      .film-card-action { opacity: 1; transform: translateY(0); }
+      .film-card-award { opacity: 1; transform: translateY(0); }
+
+      /* Bigger tap zones for hero dots */
+      .hero-dot { padding: 14px 0; box-sizing: content-box; }
     }
 
     .about-photo-frame {
@@ -759,8 +878,27 @@
         <span class="lang-sep">/</span>
         <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
       </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile drawer -->
+  <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" onclick="closeMobileMenu()"></div>
+  <aside class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-section">
+      <a href="#films" onclick="closeMobileMenu()" data-en="FILMS" data-ru="ФИЛЬМЫ">FILMS</a>
+    </div>
+    <div class="mobile-drawer-section">
+      <button id="mobileAuthBtn" onclick="openAuth(); closeMobileMenu();" data-en="Sign in" data-ru="Войти">Sign in</button>
+    </div>
+    <div class="mobile-drawer-section mobile-drawer-lang">
+      <button class="active" id="mobile-btn-en" onclick="setLang('en')">EN</button>
+      <span style="color:var(--dust);opacity:0.4">/</span>
+      <button id="mobile-btn-ru" onclick="setLang('ru')">RU</button>
+    </div>
+  </aside>
 
   <!-- Auth modal -->
   <div class="auth-overlay" id="authOverlay">
@@ -866,6 +1004,10 @@
       document.documentElement.setAttribute('data-lang', lang);
       document.getElementById('btn-en').classList.toggle('active', lang === 'en');
       document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+      const mEn = document.getElementById('mobile-btn-en');
+      const mRu = document.getElementById('mobile-btn-ru');
+      if (mEn) mEn.classList.toggle('active', lang === 'en');
+      if (mRu) mRu.classList.toggle('active', lang === 'ru');
 
       // Update static text nodes
       document.querySelectorAll('[data-en]').forEach(el => {
@@ -1206,6 +1348,58 @@
         updateAuthUI();
       }
     }
+
+    // ── Mobile drawer ──
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      const backdrop = document.getElementById('mobileDrawerBackdrop');
+      const btn = document.getElementById('mobileMenuBtn');
+      const isOpen = drawer.classList.toggle('open');
+      backdrop.classList.toggle('open', isOpen);
+      btn.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+    function closeMobileMenu() {
+      document.getElementById('mobileDrawer').classList.remove('open');
+      document.getElementById('mobileDrawerBackdrop').classList.remove('open');
+      document.getElementById('mobileMenuBtn').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── Hero swipe (touch) ──
+    (function setupSwipe() {
+      const heroEl = document.getElementById('heroSection');
+      if (!heroEl) return;
+      let startX = 0, startY = 0;
+      heroEl.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+      heroEl.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+          if (dx < 0) goHero(heroIndex + 1, 'next');
+          else goHero(heroIndex - 1, 'prev');
+        }
+      }, { passive: true });
+    })();
+
+    // Override updateAuthUI to also update mobile drawer button
+    const _originalUpdateAuthUI = updateAuthUI;
+    updateAuthUI = function() {
+      _originalUpdateAuthUI();
+      const mBtn = document.getElementById('mobileAuthBtn');
+      if (mBtn) {
+        if (currentUser) {
+          mBtn.textContent = currentUser.email;
+          mBtn.onclick = () => { showUserMenu(); closeMobileMenu(); };
+        } else {
+          mBtn.textContent = currentLang === 'ru' ? 'Войти' : 'Sign in';
+          mBtn.onclick = () => { openAuth(); closeMobileMenu(); };
+        }
+      }
+    };
 
     // Init
     initHeroSlides();
